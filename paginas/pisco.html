@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Pisco Peruano - Licorería Don David</title>
+
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
+
+
+<link rel="stylesheet" href="../style.css">
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+
+</head>
+
+
+<body>
+
+<div id="mini-header"></div>
+
+<section class="container my-5">
+
+
+<div class="row align-items-center">
+
+
+<div class="col-md-6">
+
+
+<img src="../imagenes/piscano.png"
+class="img-fluid rounded shadow producto-img">
+
+
+</div>
+
+
+
+<div class="col-md-6">
+
+
+<h1>
+
+🍾 Pisco Peruano
+
+</h1>
+
+
+<p class="text-warning fs-3">
+
+★★★★★
+
+</p>
+
+
+
+<h3>
+
+S/ 50.00
+
+</h3>
+
+
+
+<p>
+
+Pisco peruano de calidad,
+perfecto para preparar cócteles
+y disfrutar momentos especiales.
+
+</p>
+
+
+
+<h5>
+
+Características:
+
+</h5>
+
+
+<ul>
+
+<li>Producto original</li>
+
+<li>Presentación premium</li>
+
+<li>Sabor equilibrado</li>
+
+<li>Excelente opción para regalo</li>
+
+</ul>
+
+
+
+<div class="producto-acciones mt-3">
+
+    <div class="d-flex align-items-center gap-2 mb-3">
+        <label class="mb-0">Cantidad:</label>
+        <button type="button" class="btn-qty" onclick="ajustarInputCantidad(this, -1)">−</button>
+        <input type="number" class="input-cantidad" value="1" min="1">
+        <button type="button" class="btn-qty" onclick="ajustarInputCantidad(this, 1)">+</button>
+    </div>
+
+    <button type="button" class="btn btn-warning btn-agregar-carrito"
+        data-id="pisco" data-nombre="Pisco Peruano" data-precio="50.00" data-imagen="/imagenes/piscano.png">
+        🛒 Agregar al carrito
+    </button>
+
+</div>
+
+
+<br>
+
+
+<a href="https://wa.me/51986708039?text=Hola%20Licorería%20Don%20David,%20quiero%20comprar%20Pisco%20Peruano%20de%20S/50.00"
+class="btn btn-producto"
+target="_blank">
+
+Comprar por WhatsApp (solo este producto)
+
+</a>
+
+
+<br><br>
+
+
+<a href="../index.html"
+class="btn btn-secondary">
+
+← Volver a productos
+
+</a>
+
+
+</div>
+
+
+</div>
+
+
+</section>
+
+<div id="widgets-compartidos"></div>
+
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script>
+<!-- Supabase (opcional, ver script.js) -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="../partials.js"></script>
+<script src="../script.js"></script>
+
+</body>
+
+</html>
