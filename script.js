@@ -358,7 +358,7 @@ function inicializarCalculadora() {
 // tu proyecto, el catálogo empieza a leerse desde tu base de
 // datos en vez de estar escrito a mano en este archivo.
 // ------------------------------------------------------------
-const SUPABASE_URL = "https://fafjemdcwsyxzxnpnqvt.supabase.co/rest/v1/";
+const SUPABASE_URL = "https://fafjemdcwsyxzxnpnqvt.supabase.co";
 const SUPABASE_ANON_KEY = "sb_publishable_ZyaRIc63bKWQK0911P4UDg_MJAwLn0v";
 
 function supabaseConfigurado() {
