@@ -1301,3 +1301,53 @@ h1,h2,h3{
 .btn-carrito-header:hover {
     background: rgba(255,255,255,.15);
 }
+
+/* ============================================================
+   CATÁLOGO COMPLETO
+   ============================================================ */
+.catalogo-buscador {
+    max-width: 500px;
+}
+
+.pildoras-categoria {
+    display: flex;
+    gap: 10px;
+    overflow-x: auto;
+    padding-bottom: 10px;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+.pildoras-categoria::-webkit-scrollbar {
+    display: none;
+}
+
+.pildora-categoria {
+    flex: 0 0 auto;
+    background: white;
+    border: 1px solid #d4af37;
+    color: #212529;
+    padding: 8px 18px;
+    border-radius: 20px;
+    font-size: 14px;
+    white-space: nowrap;
+    transition: .3s;
+}
+
+.pildora-categoria:hover {
+    background: #faf3df;
+}
+
+.pildora-categoria.activa {
+    background: #d4af37;
+    color: #212529;
+    font-weight: bold;
+}
+
+.badge-catalogo {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    z-index: 2;
+    font-size: 11px;
+}

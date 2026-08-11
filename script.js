@@ -21,11 +21,21 @@ const CARRITO_STORAGE_KEY = "donDavidCarrito";
 // datos, y el carrito, la calculadora y la grilla de productos
 // siguen funcionando exactamente igual, sin tocar nada más.
 let PRODUCTOS = [
-  { id: "whisky",   nombre: "Whisky Premium",    categoria: "whisky",  precio: 120.00, imagen: "/imagenes/wizky.jpg",   pagina: "/paginas/whisky.html" },
-  { id: "vino",     nombre: "Vino Reserva",      categoria: "vino",    precio: 60.00,  imagen: "/imagenes/vinoki.jpg",  pagina: "/paginas/vino.html" },
-  { id: "cerveza",  nombre: "Cerveza Artesanal", categoria: "cerveza", precio: 15.00,  imagen: "/imagenes/cerbeza.jpg", pagina: "/paginas/cerveza.html" },
-  { id: "pisco",    nombre: "Pisco Peruano",     categoria: "pisco",   precio: 50.00,  imagen: "/imagenes/piscano.png", pagina: "/paginas/pisco.html" }
+  { id: "whisky",   nombre: "Whisky Premium",    categoria: "whisky",  precio: 120.00, imagen: "/imagenes/wizky.jpg",   pagina: "/paginas/whisky.html",  etiqueta: "mas_vendido",
+    descripcion: "Whisky seleccionado de excelente calidad, perfecto para celebraciones y reuniones." },
+  { id: "vino",     nombre: "Vino Reserva",      categoria: "vino",    precio: 60.00,  imagen: "/imagenes/vinoki.jpg",  pagina: "/paginas/vino.html",    etiqueta: "recomendado",
+    descripcion: "Vino seleccionado de excelente calidad, perfecto para cenas y momentos especiales." },
+  { id: "cerveza",  nombre: "Cerveza Artesanal", categoria: "cerveza", precio: 15.00,  imagen: "/imagenes/cerbeza.jpg", pagina: "/paginas/cerveza.html", etiqueta: null,
+    descripcion: "Cerveza artesanal con excelente sabor, ideal para compartir con amigos." },
+  { id: "pisco",    nombre: "Pisco Peruano",     categoria: "pisco",   precio: 50.00,  imagen: "/imagenes/piscano.png", pagina: "/paginas/pisco.html",   etiqueta: "nuevo", precio_oferta: 42.00,
+    descripcion: "Pisco peruano de calidad, perfecto para preparar cócteles." }
 ];
+
+// Categorías que ya tienen su propia página de detalle (paginas/*.html).
+// El catálogo puede mostrar productos de OTRAS categorías (una vez
+// conectado a Supabase) que todavía no tienen una página propia — para
+// esos casos no se muestra el botón "Ver", solo "Agregar al carrito".
+const CATEGORIAS_CON_PAGINA_PROPIA = ["whisky", "vino", "cerveza", "pisco"];
 
 function formatearPrecio(valor) {
   return "S/ " + valor.toFixed(2);
@@ -369,6 +379,174 @@ function inicializarCalculadora() {
 }
 
 // ------------------------------------------------------------
+// CATÁLOGO COMPLETO — filtro por categoría + búsqueda, en
+// catalogo.html. Reutiliza el mismo arreglo PRODUCTOS que usan
+// el carrito y la calculadora, así que en cuanto Supabase esté
+// activo, el catálogo automáticamente muestra todo lo que David
+// cargue desde el panel, sin cambiar nada de este código.
+// ------------------------------------------------------------
+const CATEGORIAS_CATALOGO = [
+  { valor: "todos", etiqueta: "Todos" },
+  { valor: "cerveza", etiqueta: "🍺 Cerveza" },
+  { valor: "whisky", etiqueta: "🥃 Whisky" },
+  { valor: "ron", etiqueta: "🍶 Ron" },
+  { valor: "vodka", etiqueta: "🍸 Vodka" },
+  { valor: "pisco", etiqueta: "🍾 Pisco" },
+  { valor: "tequila", etiqueta: "🌵 Tequila" },
+  { valor: "vino", etiqueta: "🍷 Vino" },
+  { valor: "espumante", etiqueta: "🥂 Espumante" },
+  { valor: "energizante", etiqueta: "⚡ Energizante" },
+  { valor: "gaseosa", etiqueta: "🥤 Gaseosa" },
+  { valor: "agua", etiqueta: "💧 Agua" }
+];
+
+const ETIQUETAS_BADGE = {
+  mas_vendido: { texto: "Más vendido", clase: "bg-danger" },
+  recomendado: { texto: "Recomendado", clase: "bg-warning text-dark" },
+  nuevo: { texto: "Nuevo", clase: "bg-success" }
+};
+
+let filtroCategoriaActual = "todos";
+
+function renderizarFiltrosCategoria() {
+  const contenedor = document.getElementById("filtrosCategoria");
+  if (!contenedor) return;
+
+  contenedor.innerHTML = CATEGORIAS_CATALOGO.map(function (cat) {
+    const activa = cat.valor === filtroCategoriaActual ? " activa" : "";
+    return '<button type="button" class="pildora-categoria' + activa + '" data-categoria="' + cat.valor + '">' + cat.etiqueta + '</button>';
+  }).join("");
+
+  contenedor.querySelectorAll(".pildora-categoria").forEach(function (boton) {
+    boton.addEventListener("click", function () {
+      filtroCategoriaActual = boton.dataset.categoria;
+      renderizarFiltrosCategoria();
+      renderizarCatalogo();
+    });
+  });
+}
+
+function renderizarCatalogo() {
+  const grilla = document.getElementById("grillaCatalogo");
+  if (!grilla) return; // esta página no es catalogo.html
+
+  const buscador = document.getElementById("buscadorCatalogo");
+  const texto = buscador ? buscador.value.toLowerCase() : "";
+
+  const filtrados = PRODUCTOS.filter(function (p) {
+    const coincideCategoria = filtroCategoriaActual === "todos" || p.categoria === filtroCategoriaActual;
+    const coincideTexto = p.nombre.toLowerCase().indexOf(texto) !== -1;
+    return coincideCategoria && coincideTexto;
+  });
+
+  const sinResultados = document.getElementById("catalogoSinResultados");
+
+  if (filtrados.length === 0) {
+    grilla.innerHTML = "";
+    if (sinResultados) sinResultados.style.display = "block";
+    return;
+  }
+  if (sinResultados) sinResultados.style.display = "none";
+
+  grilla.innerHTML = filtrados.map(function (p) {
+    const badgeInfo = p.etiqueta ? ETIQUETAS_BADGE[p.etiqueta] : null;
+    const badgeHTML = badgeInfo
+      ? '<span class="badge ' + badgeInfo.clase + ' badge-catalogo">' + badgeInfo.texto + '</span>'
+      : '';
+
+    const precioHTML = p.precio_oferta
+      ? '<span class="text-decoration-line-through text-secondary me-2" style="font-size:14px;">' + formatearPrecio(p.precio) + '</span><span class="text-danger fw-bold">' + formatearPrecio(p.precio_oferta) + '</span>'
+      : '<span>' + formatearPrecio(p.precio) + '</span>';
+
+    const tieneDetalle = CATEGORIAS_CON_PAGINA_PROPIA.indexOf(p.categoria) !== -1;
+    const botonVer = tieneDetalle ? '<a href="' + p.pagina + '" class="btn btn-sm btn-producto">Ver</a>' : '';
+
+    return (
+      '<div class="col-6 col-md-4 col-lg-3">' +
+        '<div class="card producto-card h-100 position-relative">' +
+          badgeHTML +
+          '<img src="' + p.imagen + '" class="card-img-top">' +
+          '<div class="card-body text-center">' +
+            '<h6 class="card-title">' + p.nombre + '</h6>' +
+            '<p class="mb-2">' + precioHTML + '</p>' +
+            '<div class="d-flex gap-2 justify-content-center flex-wrap">' +
+              botonVer +
+              '<button type="button" class="btn btn-sm btn-producto btn-agregar-carrito" ' +
+                'data-id="' + p.id + '" data-nombre="' + p.nombre + '" ' +
+                'data-precio="' + (p.precio_oferta || p.precio) + '" data-imagen="' + p.imagen + '">🛒</button>' +
+            '</div>' +
+          '</div>' +
+        '</div>' +
+      '</div>'
+    );
+  }).join("");
+
+  conectarBotonesAgregar();
+}
+
+function inicializarCatalogo() {
+  if (!document.getElementById("grillaCatalogo")) return;
+  renderizarFiltrosCategoria();
+  renderizarCatalogo();
+
+  const buscador = document.getElementById("buscadorCatalogo");
+  if (buscador) buscador.addEventListener("keyup", renderizarCatalogo);
+}
+
+// ------------------------------------------------------------
+// PÁGINA DE PRODUCTO (plantilla única) — producto.html?id=X
+// Reemplaza tener un archivo .html distinto por cada producto
+// (whisky.html, vino.html...). Lee el id de la URL, busca ese
+// producto en PRODUCTOS, y llena la plantilla. Si más adelante
+// agregan un producto nuevo desde Supabase, ya tiene página de
+// detalle automáticamente — no hay que crear ningún archivo.
+// ------------------------------------------------------------
+function renderizarPaginaProducto() {
+  const contenedor = document.getElementById("pp-contenido");
+  if (!contenedor) return; // esta página no es producto.html
+
+  const parametros = new URLSearchParams(window.location.search);
+  const id = parametros.get("id");
+  const producto = PRODUCTOS.find(function (p) { return p.id === id; });
+
+  const noEncontrado = document.getElementById("pp-no-encontrado");
+
+  if (!producto) {
+    contenedor.style.display = "none";
+    if (noEncontrado) noEncontrado.style.display = "block";
+    return;
+  }
+
+  contenedor.style.display = "";
+  if (noEncontrado) noEncontrado.style.display = "none";
+
+  document.title = producto.nombre + " - Licorería Don David";
+
+  const imagenEl = document.getElementById("pp-imagen");
+  imagenEl.src = producto.imagen;
+  imagenEl.alt = producto.nombre;
+
+  document.getElementById("pp-nombre").textContent = producto.nombre;
+  document.getElementById("pp-descripcion").textContent = producto.descripcion || "";
+
+  const precioEl = document.getElementById("pp-precio");
+  const precioFinal = producto.precio_oferta || producto.precio;
+  precioEl.innerHTML = producto.precio_oferta
+    ? '<span class="text-decoration-line-through text-secondary me-2" style="font-size:20px;">' + formatearPrecio(producto.precio) + '</span><span class="text-danger">' + formatearPrecio(producto.precio_oferta) + '</span>'
+    : formatearPrecio(producto.precio);
+
+  const btnAgregar = document.getElementById("pp-btn-agregar");
+  btnAgregar.dataset.id = producto.id;
+  btnAgregar.dataset.nombre = producto.nombre;
+  btnAgregar.dataset.precio = precioFinal;
+  btnAgregar.dataset.imagen = producto.imagen;
+  conectarBotonesAgregar();
+
+  const mensaje = encodeURIComponent("Hola Licorería Don David, quiero comprar " + producto.nombre + " de " + formatearPrecio(precioFinal));
+  document.getElementById("pp-whatsapp").href = "https://wa.me/" + WHATSAPP_NUMERO + "?text=" + mensaje;
+}
+
+// ------------------------------------------------------------
 // SUPABASE (opcional) — el sitio funciona perfectamente sin
 // esto, usando el arreglo PRODUCTOS de arriba. SUPABASE_URL y
 // SUPABASE_ANON_KEY ya NO viven en este archivo: están en
@@ -376,7 +554,6 @@ function inicializarCalculadora() {
 // HTML), para que tus credenciales reales no se pisen cada vez
 // que actualizo el resto del código.
 // ------------------------------------------------------------
-
 function supabaseConfigurado() {
   return SUPABASE_URL.indexOf("http") === 0 && SUPABASE_ANON_KEY.length > 20;
 }
@@ -403,12 +580,16 @@ async function cargarProductosDesdeSupabase() {
         nombre: p.nombre,
         categoria: p.categoria,
         precio: parseFloat(p.precio),
+        precio_oferta: p.precio_oferta ? parseFloat(p.precio_oferta) : null,
+        etiqueta: p.etiqueta || null,
         imagen: p.imagen_url || "/imagenes/banner.jpg",
         pagina: "/paginas/" + p.categoria + ".html"
       };
     });
 
     renderizarGrillaProductos();
+    renderizarCatalogo();
+    renderizarPaginaProducto();
     console.log("✅ Catálogo cargado desde Supabase:", PRODUCTOS.length, "producto(s)");
   } catch (e) {
     console.warn("No se pudo cargar el catálogo desde Supabase; se usa el catálogo local.", e);
@@ -451,6 +632,8 @@ document.addEventListener("DOMContentLoaded", function () {
   renderizarGrillaProductos();
   inicializarCarrito();
   inicializarCalculadora();
+  inicializarCatalogo();
+  renderizarPaginaProducto();
   cargarProductosDesdeSupabase();
 });
 
