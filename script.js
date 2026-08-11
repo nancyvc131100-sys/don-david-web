@@ -370,13 +370,12 @@ function inicializarCalculadora() {
 
 // ------------------------------------------------------------
 // SUPABASE (opcional) — el sitio funciona perfectamente sin
-// esto, usando el arreglo PRODUCTOS de arriba. En cuanto
-// completes SUPABASE_URL y SUPABASE_ANON_KEY con los datos de
-// tu proyecto, el catálogo empieza a leerse desde tu base de
-// datos en vez de estar escrito a mano en este archivo.
+// esto, usando el arreglo PRODUCTOS de arriba. SUPABASE_URL y
+// SUPABASE_ANON_KEY ya NO viven en este archivo: están en
+// config.js (que se carga antes que este script.js en el
+// HTML), para que tus credenciales reales no se pisen cada vez
+// que actualizo el resto del código.
 // ------------------------------------------------------------
-const SUPABASE_URL = "TU_SUPABASE_URL_AQUI";
-const SUPABASE_ANON_KEY = "TU_SUPABASE_ANON_KEY_AQUI";
 
 function supabaseConfigurado() {
   return SUPABASE_URL.indexOf("http") === 0 && SUPABASE_ANON_KEY.length > 20;
