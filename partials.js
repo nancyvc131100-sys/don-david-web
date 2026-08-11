@@ -59,7 +59,7 @@ function insertarWidgetsCompartidos() {
     '</div>' +
 
     '<a href="/index.html#inicio" class="volver-arriba" onclick="volverArriba(event)"><i class="bi bi-arrow-up"></i></a>' +
-    '<a href="https://wa.me/' + WHATSAPP_NUMERO + '" class="whatsapp" target="_blank">💬</a>';
+    '<a href="https://wa.me/' + WHATSAPP_NUMERO + '" class="whatsapp" target="_blank"><i class="bi bi-whatsapp"></i></a>';
 
   // El carrito puede haber cambiado (localStorage) desde la
   // última vez que se pintó este panel en esta página.
