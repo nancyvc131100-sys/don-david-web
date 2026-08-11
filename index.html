@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>Licorería Don David</title>
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
     
     
 
@@ -38,9 +39,17 @@
             ¿Eres mayor de 18 años?
         </p>
 
-        <button onclick="aceptarEdad()">
-            Sí, ingresar
-        </button>
+        <div class="aviso-botones">
+
+            <button onclick="aceptarEdad()">
+                Sí, ingresar
+            </button>
+
+            <button onclick="rechazarEdad()" class="btn-no-edad">
+                No
+            </button>
+
+        </div>
 
     </div>
 
@@ -77,7 +86,9 @@ Lunes - Domingo | 10:00 AM - 11:00 PM
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <div class="container">
 
-            <a class="navbar-brand logo" href="#inicio">
+            <div class="dropdown">
+
+                <a class="navbar-brand logo dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
 
     <span class="logo-icon">
         🍺
@@ -91,6 +102,11 @@ Lunes - Domingo | 10:00 AM - 11:00 PM
     </span>
 
 </a>
+
+                <!-- Contenido (dirección, WhatsApp, horario) lo llena partials.js -->
+                <ul class="dropdown-menu dropdown-menu-contacto"></ul>
+
+            </div>
 
             <button type="button" class="btn-carrito" data-bs-toggle="offcanvas" data-bs-target="#offcanvasCarrito">
                 <i class="bi bi-cart3"></i>

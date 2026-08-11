@@ -32,21 +32,28 @@ function formatearPrecio(valor) {
 }
 
 // ------------------------------------------------------------
-// AVISO DE EDAD (ya existía; sin cambios de comportamiento)
+// AVISO DE EDAD — antes se recordaba entre visitas con
+// localStorage (el código original de tu equipo). Ahora, a
+// pedido, aparece siempre que se carga o recarga la página, sin
+// excepción: por eso ya no queda ningún "recordar" acá, y el
+// aviso simplemente se muestra por defecto (así lo define el
+// CSS de #avisoEdad) hasta que el visitante elige una opción.
 // ------------------------------------------------------------
 function aceptarEdad() {
-  localStorage.setItem("edadConfirmada", "si");
   const aviso = document.getElementById("avisoEdad");
   if (aviso) aviso.style.display = "none";
 }
 
-window.addEventListener("load", function () {
-  const edad = localStorage.getItem("edadConfirmada");
-  const aviso = document.getElementById("avisoEdad");
-  if (edad === "si" && aviso) {
-    aviso.style.display = "none";
-  }
-});
+function rechazarEdad() {
+  // No hay forma 100% confiable de cerrar una pestaña que el
+  // visitante abrió por su cuenta (los navegadores lo bloquean
+  // por seguridad, salvo que la haya abierto un script). Por
+  // eso primero se intenta cerrar, y si el navegador lo impide,
+  // el redirect de abajo se ejecuta igual y saca al visitante
+  // del sitio de todas formas.
+  window.close();
+  window.location.href = "https://www.google.com";
+}
 
 // ------------------------------------------------------------
 // BUSCADOR (ya existía; ahora solo filtra las tarjetas de
@@ -161,6 +168,19 @@ function quitarDelCarrito(id) {
 
 function vaciarCarrito() {
   guardarCarrito([]);
+}
+
+// Se llama desde el botón "X" del carrito. A diferencia del
+// botón de minimizar (que solo cierra el panel y no toca los
+// datos), este SÍ borra todos los productos — por eso pide
+// confirmación antes, para que un clic accidental no borre un
+// pedido que el cliente ya armó.
+function confirmarVaciarCarrito() {
+  const carrito = obtenerCarrito();
+  if (carrito.length === 0) return;
+  if (window.confirm("¿Vaciar tu carrito? Se eliminarán todos los productos.")) {
+    vaciarCarrito();
+  }
 }
 
 function calcularTotalCarrito(carrito) {
@@ -289,9 +309,6 @@ function inicializarCarrito() {
 
   const btnEnviar = document.getElementById("btnEnviarPedido");
   if (btnEnviar) btnEnviar.addEventListener("click", enviarPedidoWhatsApp);
-
-  const btnVaciar = document.getElementById("btnVaciarCarrito");
-  if (btnVaciar) btnVaciar.addEventListener("click", vaciarCarrito);
 }
 
 // ------------------------------------------------------------
@@ -358,8 +375,8 @@ function inicializarCalculadora() {
 // tu proyecto, el catálogo empieza a leerse desde tu base de
 // datos en vez de estar escrito a mano en este archivo.
 // ------------------------------------------------------------
-const SUPABASE_URL = "https://fafjemdcwsyxzxnpnqvt.supabase.co/rest/v1/";
-const SUPABASE_ANON_KEY = "sb_publishable_ZyaRIc63bKWQK0911P4UDg_MJAwLn0v";
+const SUPABASE_URL = "TU_SUPABASE_URL_AQUI";
+const SUPABASE_ANON_KEY = "TU_SUPABASE_ANON_KEY_AQUI";
 
 function supabaseConfigurado() {
   return SUPABASE_URL.indexOf("http") === 0 && SUPABASE_ANON_KEY.length > 20;
@@ -372,7 +389,14 @@ async function cargarProductosDesdeSupabase() {
     const cliente = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
     const resultado = await cliente.from("productos").select("*").eq("activo", true);
 
-    if (resultado.error || !resultado.data || resultado.data.length === 0) return;
+    if (resultado.error) {
+      console.warn("Supabase respondió con un error (revisa URL/clave/políticas RLS):", resultado.error);
+      return;
+    }
+    if (!resultado.data || resultado.data.length === 0) {
+      console.warn("Supabase conectó bien pero no devolvió productos activos. ¿Corriste supabase/schema.sql?");
+      return;
+    }
 
     PRODUCTOS = resultado.data.map(function (p) {
       return {
@@ -386,6 +410,7 @@ async function cargarProductosDesdeSupabase() {
     });
 
     renderizarGrillaProductos();
+    console.log("✅ Catálogo cargado desde Supabase:", PRODUCTOS.length, "producto(s)");
   } catch (e) {
     console.warn("No se pudo cargar el catálogo desde Supabase; se usa el catálogo local.", e);
   }

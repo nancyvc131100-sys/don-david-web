@@ -887,6 +887,36 @@ h1,h2,h3{
     font-weight:bold;
 
 }
+
+.aviso-botones{
+
+    display:flex;
+
+    gap:15px;
+
+    justify-content:center;
+
+    margin-top:10px;
+
+}
+
+.aviso-contenido .btn-no-edad{
+
+    background:transparent;
+
+    border:2px solid #6c757d;
+
+    color:#adb5bd;
+
+}
+
+.aviso-contenido .btn-no-edad:hover{
+
+    background:#6c757d;
+
+    color:white;
+
+}
 /* PROMOCIONES */
 
 
@@ -1206,4 +1236,68 @@ h1,h2,h3{
     border-left: 4px solid #d4af37;
     border-radius: 10px;
     padding: 20px;
+}
+
+/* ============================================================
+   MENÚ DESPLEGABLE DE CONTACTO (dirección, WhatsApp, horario)
+   ============================================================ */
+.dropdown-toggle::after {
+    margin-left: 8px;
+}
+
+.dropdown-menu-contacto {
+    background: #212529;
+    border: 1px solid #d4af37;
+    border-radius: 12px;
+    padding: 8px;
+    min-width: 280px;
+}
+
+.dropdown-menu-contacto .dropdown-item {
+    color: #f5f5f5;
+    padding: 10px 12px;
+    border-radius: 8px;
+    white-space: normal;
+}
+
+.dropdown-menu-contacto .dropdown-item:hover,
+.dropdown-menu-contacto .dropdown-item:focus {
+    background: #d4af37;
+    color: #212529;
+}
+
+.dropdown-menu-contacto .dropdown-item-text {
+    padding: 10px 12px;
+    display: block;
+}
+
+.dropdown-menu-contacto i {
+    width: 18px;
+    display: inline-block;
+}
+
+/* ============================================================
+   HEADER DEL CARRITO (minimizar / vaciar)
+   ============================================================ */
+.carrito-header-botones {
+    display: flex;
+    gap: 8px;
+}
+
+.btn-carrito-header {
+    background: transparent;
+    border: none;
+    color: white;
+    font-size: 18px;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: .3s;
+}
+
+.btn-carrito-header:hover {
+    background: rgba(255,255,255,.15);
 }
