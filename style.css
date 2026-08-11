@@ -321,6 +321,13 @@ h2 {
     font-weight:bold;
 
 }
+@media (max-width: 767px) {
+    .top-bar .container {
+        flex-direction: column;
+        gap: 4px;
+        text-align: center;
+    }
+}
 
 .nav-link{
 
