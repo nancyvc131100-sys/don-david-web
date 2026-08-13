@@ -31,12 +31,6 @@ let PRODUCTOS = [
     descripcion: "Pisco peruano de calidad, perfecto para preparar cócteles." }
 ];
 
-// Categorías que ya tienen su propia página de detalle (paginas/*.html).
-// El catálogo puede mostrar productos de OTRAS categorías (una vez
-// conectado a Supabase) que todavía no tienen una página propia — para
-// esos casos no se muestra el botón "Ver", solo "Agregar al carrito".
-const CATEGORIAS_CON_PAGINA_PROPIA = ["whisky", "vino", "cerveza", "pisco"];
-
 function formatearPrecio(valor) {
   return "S/ " + valor.toFixed(2);
 }
@@ -458,8 +452,7 @@ function renderizarCatalogo() {
       ? '<span class="text-decoration-line-through text-secondary me-2" style="font-size:14px;">' + formatearPrecio(p.precio) + '</span><span class="text-danger fw-bold">' + formatearPrecio(p.precio_oferta) + '</span>'
       : '<span>' + formatearPrecio(p.precio) + '</span>';
 
-    const tieneDetalle = CATEGORIAS_CON_PAGINA_PROPIA.indexOf(p.categoria) !== -1;
-    const botonVer = tieneDetalle ? '<a href="' + p.pagina + '" class="btn btn-sm btn-producto">Ver</a>' : '';
+   const botonVer = '<a href="/producto.html?id=' + p.id + '" class="btn btn-sm btn-producto">Ver</a>';
 
     return (
       '<div class="col-6 col-md-4 col-lg-3">' +
@@ -583,7 +576,7 @@ async function cargarProductosDesdeSupabase() {
         precio_oferta: p.precio_oferta ? parseFloat(p.precio_oferta) : null,
         etiqueta: p.etiqueta || null,
         imagen: p.imagen_url || "/imagenes/banner.jpg",
-        pagina: "/paginas/" + p.categoria + ".html"
+        pagina: "/producto.html?id=" + p.id
       };
     });
 
