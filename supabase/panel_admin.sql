@@ -29,21 +29,33 @@ create policy "Cada uno lee su propio perfil"
   on perfiles for select
   using (id = auth.uid());
 
+-- Función que revisa si el usuario actual es administrador SIN que
+-- la política se consulte a sí misma (eso fue justo lo que causó el
+-- error 500: una política de "perfiles" que, para decidir, vuelve a
+-- leer "perfiles"). SECURITY DEFINER hace que esta función consulte
+-- la tabla con permisos elevados por dentro, rompiendo ese ciclo.
+create or replace function es_administrador()
+returns boolean
+language sql
+security definer
+set search_path = public
+as $$
+  select exists (
+    select 1 from perfiles where id = auth.uid() and rol = 'administrador'
+  );
+$$;
+
 -- Solo un administrador puede ver TODOS los perfiles (necesario
 -- para la pantalla de "agregar nuevo trabajador").
 create policy "Administrador lee todos los perfiles"
   on perfiles for select
-  using (
-    exists (select 1 from perfiles p where p.id = auth.uid() and p.rol = 'administrador')
-  );
+  using (es_administrador());
 
 -- Solo un administrador puede crear perfiles nuevos (dar de alta
 -- a un trabajador).
 create policy "Administrador crea perfiles"
   on perfiles for insert
-  with check (
-    exists (select 1 from perfiles p where p.id = auth.uid() and p.rol = 'administrador')
-  );
+  with check (es_administrador());
 
 
 -- --------------------------------------------------------

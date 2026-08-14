@@ -7,8 +7,13 @@
    partials.js es para el sitio público.
    ============================================================ */
 
+let _clienteSupabaseInstancia = null;
+
 function clienteSupabase() {
-  return window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+  if (!_clienteSupabaseInstancia) {
+    _clienteSupabaseInstancia = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+  }
+  return _clienteSupabaseInstancia;
 }
 
 // ------------------------------------------------------------
@@ -30,6 +35,7 @@ async function iniciarSesion(event) {
   const { data, error } = await cliente.auth.signInWithPassword({ email, password });
 
   if (error) {
+    console.error("Error de autenticación:", error);
     errorEl.textContent = "Correo o contraseña incorrectos.";
     errorEl.style.display = "block";
     boton.disabled = false;
@@ -46,6 +52,7 @@ async function iniciarSesion(event) {
     .single();
 
   if (errorPerfil || !perfil) {
+    console.error("No se encontró perfil para este usuario. UID buscado:", data.user.id, "Error de Supabase:", errorPerfil);
     errorEl.textContent = "Esta cuenta no tiene acceso al panel.";
     errorEl.style.display = "block";
     await cliente.auth.signOut();
