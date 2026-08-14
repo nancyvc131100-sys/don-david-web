@@ -21,13 +21,13 @@ const CARRITO_STORAGE_KEY = "donDavidCarrito";
 // datos, y el carrito, la calculadora y la grilla de productos
 // siguen funcionando exactamente igual, sin tocar nada más.
 let PRODUCTOS = [
-  { id: "whisky",   nombre: "Whisky Premium",    categoria: "whisky",  precio: 120.00, imagen: "/imagenes/wizky.jpg",   pagina: "/paginas/whisky.html",  etiqueta: "mas_vendido",
+  { id: "whisky",   nombre: "Whisky Premium",    categoria: "whisky",  precio: 120.00, imagen: "/imagenes/wizky.jpg",   pagina: "/producto.html?id=whisky",  etiqueta: "mas_vendido",
     descripcion: "Whisky seleccionado de excelente calidad, perfecto para celebraciones y reuniones." },
-  { id: "vino",     nombre: "Vino Reserva",      categoria: "vino",    precio: 60.00,  imagen: "/imagenes/vinoki.jpg",  pagina: "/paginas/vino.html",    etiqueta: "recomendado",
+  { id: "vino",     nombre: "Vino Reserva",      categoria: "vino",    precio: 60.00,  imagen: "/imagenes/vinoki.jpg",  pagina: "/producto.html?id=vino",    etiqueta: "recomendado",
     descripcion: "Vino seleccionado de excelente calidad, perfecto para cenas y momentos especiales." },
-  { id: "cerveza",  nombre: "Cerveza Artesanal", categoria: "cerveza", precio: 15.00,  imagen: "/imagenes/cerbeza.jpg", pagina: "/paginas/cerveza.html", etiqueta: null,
+  { id: "cerveza",  nombre: "Cerveza Artesanal", categoria: "cerveza", precio: 15.00,  imagen: "/imagenes/cerbeza.jpg", pagina: "/producto.html?id=cerveza", etiqueta: null,
     descripcion: "Cerveza artesanal con excelente sabor, ideal para compartir con amigos." },
-  { id: "pisco",    nombre: "Pisco Peruano",     categoria: "pisco",   precio: 50.00,  imagen: "/imagenes/piscano.png", pagina: "/paginas/pisco.html",   etiqueta: "nuevo", precio_oferta: 42.00,
+  { id: "pisco",    nombre: "Pisco Peruano",     categoria: "pisco",   precio: 50.00,  imagen: "/imagenes/piscano.png", pagina: "/producto.html?id=pisco",   etiqueta: "nuevo", precio_oferta: 42.00,
     descripcion: "Pisco peruano de calidad, perfecto para preparar cócteles." }
 ];
 
