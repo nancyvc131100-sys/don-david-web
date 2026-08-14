@@ -36,14 +36,24 @@ function formatearPrecio(valor) {
 }
 
 // ------------------------------------------------------------
-// AVISO DE EDAD — antes se recordaba entre visitas con
-// localStorage (el código original de tu equipo). Ahora, a
-// pedido, aparece siempre que se carga o recarga la página, sin
-// excepción: por eso ya no queda ningún "recordar" acá, y el
-// aviso simplemente se muestra por defecto (así lo define el
-// CSS de #avisoEdad) hasta que el visitante elige una opción.
+// AVISO DE EDAD — aparece siempre que se RECARGA la página
+// (F5 / botón de recargar), pero ya NO cuando se llega
+// navegando desde otra página del sitio (por ejemplo, "Volver
+// al inicio" desde el catálogo) durante la misma sesión del
+// navegador. Usa sessionStorage (se borra al cerrar la
+// pestaña) en vez de localStorage (que no se borraba nunca) —
+// eso es lo que permite la distinción.
 // ------------------------------------------------------------
+function esRecarga() {
+  try {
+    const entradas = performance.getEntriesByType("navigation");
+    if (entradas.length > 0) return entradas[0].type === "reload";
+  } catch (e) {}
+  return !!(performance.navigation && performance.navigation.type === 1); // respaldo para navegadores muy viejos
+}
+
 function aceptarEdad() {
+  sessionStorage.setItem("edadConfirmada", "si");
   const aviso = document.getElementById("avisoEdad");
   if (aviso) aviso.style.display = "none";
 }
@@ -58,6 +68,18 @@ function rechazarEdad() {
   window.close();
   window.location.href = "https://www.google.com";
 }
+
+window.addEventListener("load", function () {
+  const aviso = document.getElementById("avisoEdad");
+  if (!aviso) return;
+
+  const yaConfirmado = sessionStorage.getItem("edadConfirmada") === "si";
+  if (yaConfirmado && !esRecarga()) {
+    aviso.style.display = "none"; // llegó navegando desde otra página, ya lo había confirmado
+  }
+  // si es recarga (F5), o si nunca lo confirmó en esta sesión,
+  // no se toca nada — el aviso se queda visible por defecto.
+});
 
 // ------------------------------------------------------------
 // BUSCADOR (ya existía; ahora solo filtra las tarjetas de
@@ -452,7 +474,7 @@ function renderizarCatalogo() {
       ? '<span class="text-decoration-line-through text-secondary me-2" style="font-size:14px;">' + formatearPrecio(p.precio) + '</span><span class="text-danger fw-bold">' + formatearPrecio(p.precio_oferta) + '</span>'
       : '<span>' + formatearPrecio(p.precio) + '</span>';
 
-   const botonVer = '<a href="/producto.html?id=' + p.id + '" class="btn btn-sm btn-producto">Ver</a>';
+    const botonVer = '<a href="' + p.pagina + '" class="btn btn-sm btn-producto">Ver</a>';
 
     return (
       '<div class="col-6 col-md-4 col-lg-3">' +

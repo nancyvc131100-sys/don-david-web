@@ -236,23 +236,43 @@ body {
 
     animation: latido 2s infinite;
 
+    z-index: 1001;
+
 }
+
+/* Las ondas: dos círculos detrás del botón que crecen y se
+   desvanecen en bucle, desfasados entre sí (uno arranca a mitad
+   de camino del otro) para que no se vean como un solo anillo
+   sino como ondas continuas expandiéndose. */
 .whatsapp::before,
 .whatsapp::after {
+
     content: "";
+
     position: absolute;
+
     top: 0;
+
     left: 0;
+
     width: 100%;
+
     height: 100%;
+
     border-radius: 50%;
+
     background: #25D366;
+
     z-index: -1;
+
     animation: onda-whatsapp 2s ease-out infinite;
+
 }
 
 .whatsapp::after {
+
     animation-delay: 1s;
+
 }
 
 
@@ -338,6 +358,7 @@ h2 {
     font-weight:bold;
 
 }
+
 @media (max-width: 767px) {
     .top-bar .container {
         flex-direction: column;
@@ -437,15 +458,19 @@ h2 {
     }
 
 }
-@keyframes onda-whatsapp {
-    0% {
+
+@keyframes onda-whatsapp{
+
+    0%{
         transform: scale(1);
         opacity: 0.7;
     }
-    100% {
+
+    100%{
         transform: scale(1.9);
         opacity: 0;
     }
+
 }
 
 /* OFERTA DEL MES */
@@ -522,6 +547,7 @@ i{
     margin-top:20px;
 
 }
+
 @media (max-width: 767px) {
     .carousel-caption h1 {
         font-size: 28px;
@@ -1367,6 +1393,18 @@ h1,h2,h3{
     display: none;
 }
 
+/* En pantallas de celular, las 12 píldoras (Todos + 11 categorías) no
+   entran en una fila — ahí SÍ tiene sentido deslizar horizontalmente.
+   Desde tablet para arriba, hay espacio de sobra: que salten de línea
+   en vez de esconderse fuera de la pantalla. */
+@media (min-width: 768px) {
+    .pildoras-categoria {
+        flex-wrap: wrap;
+        overflow-x: visible;
+        padding-bottom: 0;
+    }
+}
+
 .pildora-categoria {
     flex: 0 0 auto;
     background: white;
@@ -1396,3 +1434,157 @@ h1,h2,h3{
     z-index: 2;
     font-size: 11px;
 }
+
+/* ============================================================
+   PANEL ADMIN — pantalla de login
+   ============================================================ */
+.admin-login-fondo {
+    min-height: 100vh;
+    background: #212529;
+    padding: 20px;
+}
+
+.admin-login-card {
+    background: white;
+    border-radius: 20px;
+    padding: 40px;
+    max-width: 380px;
+    width: 100%;
+    box-shadow: 0 10px 30px rgba(0,0,0,.3);
+}
+
+/* ============================================================
+   PANEL ADMIN — estilo tipo dashboard, deliberadamente distinto
+   al dorado/oscuro de la tienda pública (ver Fundamentacion de
+   decisiones: un panel de trabajo no lleva la piel de marca del
+   sitio de clientes).
+   ============================================================ */
+.admin-login-fondo {
+    min-height: 100vh;
+    background: #f8f9fa;
+    padding: 20px;
+}
+
+.admin-login-card {
+    background: white;
+    border: 1px solid #e9ecef;
+    border-radius: 16px;
+    padding: 40px;
+    max-width: 380px;
+    width: 100%;
+}
+
+.admin-shell {
+    min-height: 100vh;
+    background: #f8f9fa;
+}
+
+.admin-topbar {
+    background: white;
+    border-bottom: 1px solid #e9ecef;
+    padding: 12px 20px;
+}
+
+.admin-sidebar {
+    width: 240px;
+    background: white;
+}
+
+.admin-sidebar .offcanvas-header {
+    border-bottom: 1px solid #e9ecef;
+}
+
+@media (min-width: 768px) {
+    .admin-sidebar {
+        border-right: 1px solid #e9ecef;
+    }
+}
+
+.admin-nav-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 14px;
+    border-radius: 8px;
+    color: #495057;
+    text-decoration: none;
+    margin-bottom: 4px;
+    font-size: 14px;
+}
+
+.admin-nav-item:hover {
+    background: #f1f3f5;
+    color: #212529;
+}
+
+.admin-nav-item.activo {
+    background: #212529;
+    color: white;
+}
+
+.admin-nav-item.deshabilitado {
+    opacity: .5;
+    cursor: default;
+}
+
+.admin-pill {
+    flex: 0 0 auto;
+    border: 1px solid #dee2e6;
+    padding: 6px 16px;
+    border-radius: 20px;
+    font-size: 13px;
+    color: #495057;
+    background: white;
+    white-space: nowrap;
+}
+
+.admin-pill.activo {
+    background: #212529;
+    color: white;
+    border-color: #212529;
+}
+
+.admin-btn-nuevo {
+    background: #212529;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 8px 16px;
+    font-size: 14px;
+    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.admin-product-card {
+    border: 1px solid #e9ecef;
+    border-radius: 12px;
+    overflow: hidden;
+    background: white;
+}
+
+.admin-product-card-img {
+    background: #f1f3f5;
+    height: 110px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    color: #adb5bd;
+    font-size: 28px;
+}
+
+.admin-badge {
+    position: absolute;
+    top: 8px;
+    left: 8px;
+    font-size: 11px;
+    font-weight: 600;
+    padding: 3px 10px;
+    border-radius: 20px;
+}
+
+.admin-badge.mas-vendido { background: #d1e7dd; color: #0f5132; }
+.admin-badge.nuevo { background: #cfe2ff; color: #084298; }
+.admin-badge.recomendado { background: #fff3cd; color: #664d03; }
