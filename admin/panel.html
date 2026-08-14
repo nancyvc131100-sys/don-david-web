@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Panel - Licorería Don David</title>
+<link rel="icon" type="image/svg+xml" href="../favicon.svg">
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
+
+<link rel="stylesheet" href="../style.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+</head>
+
+<body>
+
+<div class="admin-shell d-flex" id="panelContenido" style="display:none !important;">
+
+    <!-- Offcanvas responsivo: barra lateral fija en pantalla ancha,
+         panel desplegable con botón de hamburguesa en celular.
+         Es el mismo componente de Bootstrap que ya usa el carrito,
+         solo que "offcanvas-md" lo vuelve fijo desde tablet/desktop. -->
+    <div class="offcanvas-md offcanvas-start admin-sidebar" tabindex="-1" id="sidebarAdmin">
+
+        <div class="offcanvas-header">
+            <span class="fw-bold">🍺 Panel Don David</span>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#sidebarAdmin"></button>
+        </div>
+
+        <div class="offcanvas-body d-flex flex-column">
+            <nav class="nav flex-column flex-grow-1">
+                <a href="#" class="admin-nav-item activo"><i class="bi bi-box-seam"></i> Productos</a>
+                <a href="#" class="admin-nav-item deshabilitado" onclick="return alertaProximamente()"><i class="bi bi-receipt"></i> Pedidos y ventas</a>
+                <a href="#" class="admin-nav-item deshabilitado" id="navConfig" onclick="return alertaProximamente()"><i class="bi bi-gear"></i> Configuración</a>
+            </nav>
+        </div>
+
+    </div>
+
+    <div class="flex-grow-1">
+
+        <div class="admin-topbar d-flex justify-content-between align-items-center">
+            <button type="button" class="btn d-md-none" data-bs-toggle="offcanvas" data-bs-target="#sidebarAdmin">
+                <i class="bi bi-list" style="font-size:22px;"></i>
+            </button>
+            <span class="text-secondary" id="panelSaludo" style="font-size:14px;"></span>
+            <button type="button" class="btn btn-outline-dark btn-sm" onclick="cerrarSesion()">Cerrar sesión</button>
+        </div>
+
+        <div class="container-fluid p-4">
+
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h5 class="mb-0">Productos</h5>
+                <button type="button" class="admin-btn-nuevo" onclick="return alertaProximamente()">
+                    <i class="bi bi-plus-lg"></i> Nuevo producto
+                </button>
+            </div>
+
+            <div class="d-flex gap-2 mb-4" style="overflow-x:auto;">
+                <span class="admin-pill activo">Todos</span>
+                <span class="admin-pill">Más vendidos</span>
+                <span class="admin-pill">En oferta</span>
+                <span class="admin-pill">Nuevos</span>
+            </div>
+
+            <p class="text-secondary" style="font-size:13px;">Vista previa del diseño — la gestión real de productos llega en el siguiente paso.</p>
+
+            <div class="row g-3">
+
+                <div class="col-6 col-md-3">
+                    <div class="admin-product-card">
+                        <div class="admin-product-card-img">
+                            <span class="admin-badge mas-vendido">Más vendido</span>
+                            <i class="bi bi-image"></i>
+                        </div>
+                        <div class="p-2">
+                            <p class="mb-1" style="font-size:13px; font-weight:600;">Whisky Premium</p>
+                            <p class="mb-0" style="font-size:13px;">S/ 120.00</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-6 col-md-3">
+                    <div class="admin-product-card">
+                        <div class="admin-product-card-img">
+                            <span class="admin-badge nuevo">Nuevo</span>
+                            <i class="bi bi-image"></i>
+                        </div>
+                        <div class="p-2">
+                            <p class="mb-1" style="font-size:13px; font-weight:600;">Pisco Peruano</p>
+                            <p class="mb-0" style="font-size:13px;">Precio: S/ 50.00</p>
+                            <p class="mb-0 text-secondary" style="font-size:12px;">Oferta: S/ 42.00</p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="../config.js"></script>
+<script src="admin.js"></script>
+<script>
+  function alertaProximamente() {
+    alert("Esta sección todavía no está construida — llega en el siguiente paso.");
+    return false;
+  }
+
+  exigirSesion().then(function (perfil) {
+    if (!perfil) return; // exigirSesion ya redirigió a login.html
+    document.getElementById("panelSaludo").textContent = perfil.nombre + " (" + perfil.rol + ")";
+    document.getElementById("panelContenido").style.display = "flex";
+
+    // Solo el administrador ve Configuración — coincide con la
+    // tabla de permisos que definimos juntos.
+    if (perfil.rol !== "administrador") {
+      document.getElementById("navConfig").style.display = "none";
+    }
+  });
+</script>
+
+</body>
+
+</html>
