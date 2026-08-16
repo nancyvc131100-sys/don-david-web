@@ -4,7 +4,6 @@ body {
 
 }
 
-
 /* BANNER */
 
 .hero{
@@ -23,7 +22,6 @@ body {
 
 }
 
-
 .hero h1,
 .hero p,
 .hero a{
@@ -31,7 +29,6 @@ body {
     animation: aparecer 1.2s ease;
 
 }
-
 
 @keyframes aparecer{
 
@@ -43,7 +40,6 @@ body {
 
     }
 
-
     to{
 
         opacity:1;
@@ -54,8 +50,6 @@ body {
 
 }
 
-
-
 .hero h1 {
 
     font-size: 50px;
@@ -63,7 +57,6 @@ body {
     font-weight: bold;
 
 }
-
 
 .hero p {
 
@@ -80,7 +73,6 @@ body {
     background: #f5f5f5;
 
 }
-
 
 .card {
 
@@ -99,7 +91,6 @@ body {
 
 }
 
-
 .card:hover{
 
     transform:translateY(-10px);
@@ -110,7 +101,6 @@ body {
 
 }
 
-
 .card:hover {
 
     transform: translateY(-15px);
@@ -119,13 +109,11 @@ body {
 
 }
 
-
 .card:hover {
 
     transform: translateY(-10px);
 
 }
-
 
 .card img {
 
@@ -134,7 +122,6 @@ body {
     object-fit: cover;
 
 }
-
 
 .card-title {
 
@@ -154,7 +141,6 @@ body {
 
 }
 
-
 .pago-card {
 
     background: white;
@@ -168,7 +154,6 @@ body {
     transition: 0.3s;
 
 }
-
 
 .pago-card:hover {
 
@@ -188,13 +173,11 @@ body {
 
 }
 
-
 .footer h3 {
 
     color: #d4af37;
 
 }
-
 
 .footer p {
 
@@ -275,7 +258,6 @@ body {
 
 }
 
-
 .whatsapp:hover {
 
     transform: scale(1.1);
@@ -296,7 +278,6 @@ body {
 
 }
 
-
 .btn-warning:hover {
 
     background: #b8962e;
@@ -308,7 +289,6 @@ h1, h2 {
     font-weight: bold;
 
 }
-
 
 h2 {
 
@@ -331,7 +311,6 @@ h2 {
     padding: 12px 30px;
 
 }
-
 
 .btn-warning:hover {
 
@@ -507,8 +486,6 @@ i{
 
 }
 
-
-
 .carousel-caption{
 
     top:50%;
@@ -516,7 +493,6 @@ i{
     transform:translateY(-50%);
 
 }
-
 
 .carousel-caption h1{
 
@@ -533,14 +509,11 @@ i{
 
 }
 
-
-
 .carousel-caption p{
 
     font-size:22px;
 
 }
-
 
 .carousel-caption .btn{
 
@@ -561,13 +534,11 @@ i{
 }
 /* PRODUCTOS MÁS VENDIDOS */
 
-
 .card{
 
     overflow:hidden;
 
 }
-
 
 .card img{
 
@@ -576,7 +547,6 @@ i{
     object-fit:cover;
 
 }
-
 
 .badge{
 
@@ -587,13 +557,11 @@ i{
 }
 /* TESTIMONIOS */
 
-
 .bi-person-circle{
 
     color:#d4af37;
 
 }
-
 
 .card:hover{
 
@@ -602,7 +570,6 @@ i{
 }
 /* PREGUNTAS FRECUENTES */
 
-
 .accordion-button:not(.collapsed){
 
     background-color:#212529;
@@ -610,7 +577,6 @@ i{
     color:white;
 
 }
-
 
 .accordion-button:focus{
 
@@ -637,7 +603,6 @@ iframe{
     border-radius:20px;
 
 }
-
 
 .mapa-container iframe{
 
@@ -684,7 +649,6 @@ iframe{
 
 }
 
-
 .volver-arriba:hover{
 
     background:#d4af37;
@@ -701,7 +665,6 @@ iframe{
     color:#d4af37;
 
 }
-
 
 .volver-arriba:hover i{
 
@@ -734,7 +697,6 @@ h1,h2,h3{
 
 }
 
-
 .btn-warning:hover{
 
     background:#b8962e;
@@ -751,7 +713,6 @@ h1,h2,h3{
     padding:40px 0;
 
 }
-
 
 .footer h3{
 
@@ -815,7 +776,6 @@ h1,h2,h3{
 }
 /* TARJETAS DE PRODUCTOS */
 
-
 .producto-card{
 
     border:none;
@@ -830,8 +790,6 @@ h1,h2,h3{
 
 }
 
-
-
 .producto-card:hover{
 
     transform:translateY(-12px);
@@ -841,8 +799,6 @@ h1,h2,h3{
     border:2px solid #d4af37;
 
 }
-
-
 
 .imagen-producto{
 
@@ -854,18 +810,13 @@ h1,h2,h3{
 
 }
 
-
-
 .producto-card:hover .imagen-producto{
 
     transform:scale(1.08);
 
 }
 
-
-
 /* BOTÓN PRODUCTO */
-
 
 .btn-producto{
 
@@ -881,8 +832,6 @@ h1,h2,h3{
 
 }
 
-
-
 .btn-producto:hover{
 
     background:#d4af37;
@@ -891,7 +840,6 @@ h1,h2,h3{
 
 }
 /* AVISO DE EDAD */
-
 
 #avisoEdad{
 
@@ -917,8 +865,6 @@ h1,h2,h3{
 
 }
 
-
-
 .aviso-contenido{
 
     background:#212529;
@@ -935,15 +881,11 @@ h1,h2,h3{
 
 }
 
-
-
 .aviso-contenido h2{
 
     color:#d4af37;
 
 }
-
-
 
 .aviso-contenido button{
 
@@ -990,7 +932,6 @@ h1,h2,h3{
 }
 /* PROMOCIONES */
 
-
 .promociones{
 
     background:#212529;
@@ -1001,15 +942,11 @@ h1,h2,h3{
 
 }
 
-
-
 .promociones h2{
 
     color:#d4af37;
 
 }
-
-
 
 .promo-card{
 
@@ -1036,7 +973,6 @@ h1,h2,h3{
 
 }
 
-
 .promo-card:hover{
 
     transform:scale(1.05);
@@ -1044,8 +980,6 @@ h1,h2,h3{
 }
 
 }
-
-
 
 .promo-card:hover{
 
@@ -1055,15 +989,11 @@ h1,h2,h3{
 
 }
 
-
-
 .promo-card h3{
 
     margin-top:20px;
 
 }
-
-
 
 .promo-card h4{
 
@@ -1072,8 +1002,6 @@ h1,h2,h3{
     font-size:28px;
 
 }
-
-
 
 .etiqueta{
 
@@ -1098,7 +1026,6 @@ h1,h2,h3{
 }
 /* MARCAS */
 
-
 .marcas{
 
     padding:60px 0;
@@ -1107,15 +1034,11 @@ h1,h2,h3{
 
 }
 
-
-
 .marcas h2{
 
     color:#212529;
 
 }
-
-
 
 .marca-card{
 
@@ -1136,7 +1059,6 @@ h1,h2,h3{
 
 }
 
-
 .marca-card:hover{
 
     transform:rotate(2deg) scale(1.05);
@@ -1145,15 +1067,11 @@ h1,h2,h3{
 
 }
 
-
-
 .marca-card h5{
 
     margin-top:15px;
 
 }
-
-
 
 .marca-card:hover{
 
@@ -1163,7 +1081,6 @@ h1,h2,h3{
 
 }
 /* LOGO */
-
 
 .logo{
 
@@ -1181,8 +1098,6 @@ h1,h2,h3{
 
 }
 
-
-
 .logo strong{
 
     display:block;
@@ -1192,8 +1107,6 @@ h1,h2,h3{
     font-size:22px;
 
 }
-
-
 
 .logo-icon{
 
@@ -1435,156 +1348,14 @@ h1,h2,h3{
     font-size: 11px;
 }
 
-/* ============================================================
-   PANEL ADMIN — pantalla de login
-   ============================================================ */
-.admin-login-fondo {
-    min-height: 100vh;
-    background: #212529;
-    padding: 20px;
+/* Descripción de producto formateada (negrita/viñetas desde el
+   panel) — justificada por defecto. */
+#pp-descripcion p {
+    text-align: justify;
+    margin-bottom: 8px;
 }
 
-.admin-login-card {
-    background: white;
-    border-radius: 20px;
-    padding: 40px;
-    max-width: 380px;
-    width: 100%;
-    box-shadow: 0 10px 30px rgba(0,0,0,.3);
+#pp-descripcion ul {
+    text-align: left;
+    padding-left: 20px;
 }
-
-/* ============================================================
-   PANEL ADMIN — estilo tipo dashboard, deliberadamente distinto
-   al dorado/oscuro de la tienda pública (ver Fundamentacion de
-   decisiones: un panel de trabajo no lleva la piel de marca del
-   sitio de clientes).
-   ============================================================ */
-.admin-login-fondo {
-    min-height: 100vh;
-    background: #f8f9fa;
-    padding: 20px;
-}
-
-.admin-login-card {
-    background: white;
-    border: 1px solid #e9ecef;
-    border-radius: 16px;
-    padding: 40px;
-    max-width: 380px;
-    width: 100%;
-}
-
-.admin-shell {
-    min-height: 100vh;
-    background: #f8f9fa;
-}
-
-.admin-topbar {
-    background: white;
-    border-bottom: 1px solid #e9ecef;
-    padding: 12px 20px;
-}
-
-.admin-sidebar {
-    width: 240px;
-    background: white;
-}
-
-.admin-sidebar .offcanvas-header {
-    border-bottom: 1px solid #e9ecef;
-}
-
-@media (min-width: 768px) {
-    .admin-sidebar {
-        border-right: 1px solid #e9ecef;
-    }
-}
-
-.admin-nav-item {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    padding: 10px 14px;
-    border-radius: 8px;
-    color: #495057;
-    text-decoration: none;
-    margin-bottom: 4px;
-    font-size: 14px;
-}
-
-.admin-nav-item:hover {
-    background: #f1f3f5;
-    color: #212529;
-}
-
-.admin-nav-item.activo {
-    background: #212529;
-    color: white;
-}
-
-.admin-nav-item.deshabilitado {
-    opacity: .5;
-    cursor: default;
-}
-
-.admin-pill {
-    flex: 0 0 auto;
-    border: 1px solid #dee2e6;
-    padding: 6px 16px;
-    border-radius: 20px;
-    font-size: 13px;
-    color: #495057;
-    background: white;
-    white-space: nowrap;
-}
-
-.admin-pill.activo {
-    background: #212529;
-    color: white;
-    border-color: #212529;
-}
-
-.admin-btn-nuevo {
-    background: #212529;
-    color: white;
-    border: none;
-    border-radius: 8px;
-    padding: 8px 16px;
-    font-size: 14px;
-    font-weight: 600;
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-}
-
-.admin-product-card {
-    border: 1px solid #e9ecef;
-    border-radius: 12px;
-    overflow: hidden;
-    background: white;
-}
-
-.admin-product-card-img {
-    background: #f1f3f5;
-    height: 110px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    position: relative;
-    color: #adb5bd;
-    font-size: 28px;
-}
-
-.admin-badge {
-    position: absolute;
-    top: 8px;
-    left: 8px;
-    font-size: 11px;
-    font-weight: 600;
-    padding: 3px 10px;
-    border-radius: 20px;
-}
-
-.admin-badge.mas-vendido { background: #d1e7dd; color: #0f5132; }
-.admin-badge.nuevo { background: #cfe2ff; color: #084298; }
-.admin-badge.recomendado { background: #fff3cd; color: #664d03; }
