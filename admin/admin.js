@@ -31,37 +31,60 @@ async function iniciarSesion(event) {
   boton.disabled = true;
   boton.textContent = "Ingresando...";
 
-  const cliente = clienteSupabase();
-  const { data, error } = await cliente.auth.signInWithPassword({ email, password });
+  // Si la conexión tarda demasiado (o se corta a medias, algo
+  // más común en datos móviles que en wifi), esto evita que el
+  // botón se quede en "Ingresando..." para siempre sin avisar
+  // nada. A los 15 segundos se corta solo y muestra un mensaje.
+  const tiempoAgotado = new Promise(function (_, reject) {
+    setTimeout(function () { reject(new Error("TIEMPO_AGOTADO")); }, 15000);
+  });
 
-  if (error) {
-    console.error("Error de autenticación:", error);
-    errorEl.textContent = "Correo o contraseña incorrectos.";
+  try {
+    const cliente = clienteSupabase();
+    const { data, error } = await Promise.race([
+      cliente.auth.signInWithPassword({ email, password }),
+      tiempoAgotado
+    ]);
+
+    if (error) {
+      console.error("Error de autenticación:", error);
+      errorEl.textContent = "Correo o contraseña incorrectos.";
+      errorEl.style.display = "block";
+      return;
+    }
+
+    // Tener una cuenta de acceso no alcanza: además necesita una
+    // fila en "perfiles" (ahí vive su rol). Sin eso, no entra.
+    const { data: perfil, error: errorPerfil } = await Promise.race([
+      cliente.from("perfiles").select("*").eq("id", data.user.id).single(),
+      tiempoAgotado
+    ]);
+
+    if (errorPerfil || !perfil) {
+      console.error("No se encontró perfil para este usuario. UID buscado:", data.user.id, "Error de Supabase:", errorPerfil);
+      errorEl.textContent = "Esta cuenta no tiene acceso al panel.";
+      errorEl.style.display = "block";
+      await cliente.auth.signOut();
+      return;
+    }
+
+    window.location.href = "panel.html";
+  } catch (e) {
+    if (e.message === "TIEMPO_AGOTADO") {
+      console.error("El login tardó demasiado y se cortó solo.");
+      errorEl.textContent = "Esto está tardando más de lo normal. Revisa tu conexión a internet e intenta de nuevo.";
+    } else {
+      console.error("Error inesperado en el login:", e);
+      errorEl.textContent = "Ocurrió un error inesperado. Intenta de nuevo.";
+    }
     errorEl.style.display = "block";
+  } finally {
+    // Pase lo que pase (éxito, error, o tiempo agotado), el botón
+    // nunca se queda trabado en "Ingresando..." — esto es lo que
+    // faltaba antes.
     boton.disabled = false;
     boton.textContent = "Ingresar";
-    return;
   }
-
-  // Tener una cuenta de acceso no alcanza: además necesita una
-  // fila en "perfiles" (ahí vive su rol). Sin eso, no entra.
-  const { data: perfil, error: errorPerfil } = await cliente
-    .from("perfiles")
-    .select("*")
-    .eq("id", data.user.id)
-    .single();
-
-  if (errorPerfil || !perfil) {
-    console.error("No se encontró perfil para este usuario. UID buscado:", data.user.id, "Error de Supabase:", errorPerfil);
-    errorEl.textContent = "Esta cuenta no tiene acceso al panel.";
-    errorEl.style.display = "block";
-    await cliente.auth.signOut();
-    boton.disabled = false;
-    boton.textContent = "Ingresar";
-    return;
-  }
-
-  window.location.href = "panel.html";
 }
 
 // ------------------------------------------------------------
