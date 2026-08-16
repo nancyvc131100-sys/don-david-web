@@ -157,3 +157,39 @@ create policy "Staff ve capturas de pago"
     bucket_id = 'capturas-pago'
     and exists (select 1 from perfiles p where p.id = auth.uid())
   );
+
+
+-- --------------------------------------------------------
+-- 6. ALMACENAMIENTO DE IMÁGENES DE PRODUCTOS — a diferencia del
+--    bucket de capturas de pago (privado), este SÍ es público:
+--    los clientes necesitan ver las fotos en la tienda. Solo el
+--    staff autenticado puede subir, cambiar o borrar imágenes.
+-- --------------------------------------------------------
+insert into storage.buckets (id, name, public)
+values ('productos-imagenes', 'productos-imagenes', true)
+on conflict (id) do nothing;
+
+create policy "Cualquiera ve las imágenes de productos"
+  on storage.objects for select
+  using (bucket_id = 'productos-imagenes');
+
+create policy "Staff sube imágenes de productos"
+  on storage.objects for insert
+  with check (
+    bucket_id = 'productos-imagenes'
+    and exists (select 1 from perfiles p where p.id = auth.uid())
+  );
+
+create policy "Staff actualiza imágenes de productos"
+  on storage.objects for update
+  using (
+    bucket_id = 'productos-imagenes'
+    and exists (select 1 from perfiles p where p.id = auth.uid())
+  );
+
+create policy "Staff elimina imágenes de productos"
+  on storage.objects for delete
+  using (
+    bucket_id = 'productos-imagenes'
+    and exists (select 1 from perfiles p where p.id = auth.uid())
+  );

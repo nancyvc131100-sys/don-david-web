@@ -57,49 +57,23 @@
 
             <div class="d-flex justify-content-between align-items-center mb-3">
                 <h5 class="mb-0">Productos</h5>
-                <button type="button" class="admin-btn-nuevo" onclick="return alertaProximamente()">
+                <button type="button" class="admin-btn-nuevo" onclick="abrirModalProducto()">
                     <i class="bi bi-plus-lg"></i> Nuevo producto
                 </button>
             </div>
 
-            <div class="d-flex gap-2 mb-4" style="overflow-x:auto;">
-                <span class="admin-pill activo">Todos</span>
-                <span class="admin-pill">Más vendidos</span>
-                <span class="admin-pill">En oferta</span>
-                <span class="admin-pill">Nuevos</span>
+            <div class="d-flex gap-2 mb-4" id="pildorasProductosPanel" style="overflow-x:auto;">
+                <!-- JS: renderizarPildorasPanel() en productos.js -->
             </div>
 
-            <p class="text-secondary" style="font-size:13px;">Vista previa del diseño — la gestión real de productos llega en el siguiente paso.</p>
+            <div id="productosPanelCargando" class="text-secondary" style="font-size:13px;">Cargando productos...</div>
+            <div id="productosPanelVacio" class="text-secondary text-center py-5" style="display:none;">
+                <i class="bi bi-inbox" style="font-size:2rem;"></i>
+                <p class="mt-2">No hay productos en esta vista.</p>
+            </div>
 
-            <div class="row g-3">
-
-                <div class="col-6 col-md-3">
-                    <div class="admin-product-card">
-                        <div class="admin-product-card-img">
-                            <span class="admin-badge mas-vendido">Más vendido</span>
-                            <i class="bi bi-image"></i>
-                        </div>
-                        <div class="p-2">
-                            <p class="mb-1" style="font-size:13px; font-weight:600;">Whisky Premium</p>
-                            <p class="mb-0" style="font-size:13px;">S/ 120.00</p>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-6 col-md-3">
-                    <div class="admin-product-card">
-                        <div class="admin-product-card-img">
-                            <span class="admin-badge nuevo">Nuevo</span>
-                            <i class="bi bi-image"></i>
-                        </div>
-                        <div class="p-2">
-                            <p class="mb-1" style="font-size:13px; font-weight:600;">Pisco Peruano</p>
-                            <p class="mb-0" style="font-size:13px;">Precio: S/ 50.00</p>
-                            <p class="mb-0 text-secondary" style="font-size:12px;">Oferta: S/ 42.00</p>
-                        </div>
-                    </div>
-                </div>
-
+            <div class="row g-3" id="grillaProductosPanel">
+                <!-- JS: renderizarGrillaProductosPanel() en productos.js -->
             </div>
 
         </div>
@@ -108,11 +82,102 @@
 
 </div>
 
+<!-- MODAL: crear / editar producto -->
+<div class="modal fade" id="modalProducto" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <form id="formProducto" onsubmit="guardarProducto(event)">
+        <div class="modal-header">
+          <h5 class="modal-title" id="modalProductoTitulo">Nuevo producto</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body">
+
+          <input type="hidden" id="fpId">
+          <input type="hidden" id="fpImagenActual">
+
+          <div class="mb-3">
+            <label class="form-label">Nombre</label>
+            <input type="text" class="form-control" id="fpNombre" required>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">Categoría</label>
+            <select class="form-select" id="fpCategoria" required>
+              <option value="cerveza">Cerveza</option>
+              <option value="whisky">Whisky</option>
+              <option value="ron">Ron</option>
+              <option value="vodka">Vodka</option>
+              <option value="pisco">Pisco</option>
+              <option value="tequila">Tequila</option>
+              <option value="vino">Vino</option>
+              <option value="espumante">Espumante</option>
+              <option value="energizante">Energizante</option>
+              <option value="gaseosa">Gaseosa</option>
+              <option value="agua">Agua</option>
+            </select>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">Precio (S/)</label>
+            <input type="number" step="0.01" min="0" class="form-control" id="fpPrecio" required>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">Descripción</label>
+            <textarea class="form-control" id="fpDescripcion" rows="2"></textarea>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">Foto</label>
+            <input type="file" class="form-control" id="fpImagen" accept="image/*">
+            <img id="fpImagenPreview" style="display:none; max-width:90px; margin-top:8px; border-radius:8px;" alt="Vista previa">
+          </div>
+
+          <hr>
+          <p class="text-secondary mb-2" style="font-size:13px;">Opciones avanzadas</p>
+
+          <div class="mb-3">
+            <label class="form-label">Etiqueta</label>
+            <select class="form-select" id="fpEtiqueta">
+              <option value="">Ninguna</option>
+              <option value="mas_vendido">Más vendido</option>
+              <option value="recomendado">Recomendado</option>
+              <option value="nuevo">Nuevo</option>
+            </select>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">Precio de oferta (opcional)</label>
+            <input type="number" step="0.01" min="0" class="form-control" id="fpPrecioOferta">
+          </div>
+
+          <div class="form-check mb-2">
+            <input type="checkbox" class="form-check-input" id="fpCarrusel">
+            <label class="form-check-label" for="fpCarrusel">Mostrar en el carrusel de inicio</label>
+          </div>
+
+          <div id="formProductoError" class="alert alert-danger py-2 mt-2" style="display:none; font-size:13px;"></div>
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline-danger me-auto" id="btnMoverPapelera" style="display:none;" onclick="moverAPapeleraDesdeModal()">
+            <i class="bi bi-trash"></i> Mover a papelera
+          </button>
+          <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancelar</button>
+          <button type="submit" class="btn btn-dark" id="btnGuardarProducto">Guardar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
 <!-- Bootstrap JS -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="../config.js"></script>
 <script src="admin.js"></script>
+<script src="productos.js"></script>
 <script>
   function alertaProximamente() {
     alert("Esta sección todavía no está construida — llega en el siguiente paso.");
@@ -129,6 +194,8 @@
     if (perfil.rol !== "administrador") {
       document.getElementById("navConfig").style.display = "none";
     }
+
+    inicializarProductosPanel();
   });
 </script>
 

@@ -1,0 +1,1590 @@
+body {
+
+    font-family: Arial, sans-serif;
+
+}
+
+
+/* BANNER */
+
+.hero{
+
+    background:
+    linear-gradient(rgba(0,0,0,.65),rgba(0,0,0,.65)),
+    url("imagenes/banner.jpg");
+
+    background-size:cover;
+
+    background-position:center;
+
+    color:white;
+
+    padding:140px 0;
+
+}
+
+
+.hero h1,
+.hero p,
+.hero a{
+
+    animation: aparecer 1.2s ease;
+
+}
+
+
+@keyframes aparecer{
+
+    from{
+
+        opacity:0;
+
+        transform:translateY(30px);
+
+    }
+
+
+    to{
+
+        opacity:1;
+
+        transform:translateY(0);
+
+    }
+
+}
+
+
+
+.hero h1 {
+
+    font-size: 50px;
+
+    font-weight: bold;
+
+}
+
+
+.hero p {
+
+    font-size: 22px;
+
+}
+
+/* PRODUCTOS */
+
+.productos {
+
+    padding: 60px 0;
+
+    background: #f5f5f5;
+
+}
+
+
+.card {
+
+    border: none;
+
+    border-radius: 20px;
+
+    overflow: hidden;
+
+    transition: 0.4s;
+
+    box-shadow: 0 5px 20px rgba(0,0,0,0.15);
+    .card{
+
+    transition:.4s;
+
+}
+
+
+.card:hover{
+
+    transform:translateY(-10px);
+
+    box-shadow:0 15px 30px rgba(0,0,0,.25);
+
+}
+
+}
+
+
+.card:hover {
+
+    transform: translateY(-15px);
+
+    box-shadow: 0 15px 30px rgba(0,0,0,0.3);
+
+}
+
+
+.card:hover {
+
+    transform: translateY(-10px);
+
+}
+
+
+.card img {
+
+    height: 250px;
+
+    object-fit: cover;
+
+}
+
+
+.card-title {
+
+    font-weight: bold;
+
+}
+
+/* METODOS DE PAGO */
+
+.pagos {
+
+    background: #111;
+
+    color: white;
+
+    padding: 60px 0;
+
+}
+
+
+.pago-card {
+
+    background: white;
+
+    color: black;
+
+    padding: 25px;
+
+    border-radius: 15px;
+
+    transition: 0.3s;
+
+}
+
+
+.pago-card:hover {
+
+    transform: translateY(-8px);
+
+}
+
+/* FOOTER */
+
+.footer {
+
+    background: #000;
+
+    color: white;
+
+    padding: 40px 0;
+
+}
+
+
+.footer h3 {
+
+    color: #d4af37;
+
+}
+
+
+.footer p {
+
+    margin: 10px;
+
+}
+
+/* BOTON WHATSAPP */
+
+.whatsapp {
+
+    position: fixed;
+
+    bottom: 25px;
+
+    right: 25px;
+
+    background: #25D366;
+
+    color: white;
+
+    width: 60px;
+
+    height: 60px;
+
+    border-radius: 50%;
+
+    display: flex;
+
+    justify-content: center;
+
+    align-items: center;
+
+    font-size: 30px;
+
+    text-decoration: none;
+
+    box-shadow: 0px 4px 10px rgba(0,0,0,0.3);
+
+    animation: latido 2s infinite;
+
+    z-index: 1001;
+
+}
+
+/* Las ondas: dos círculos detrás del botón que crecen y se
+   desvanecen en bucle, desfasados entre sí (uno arranca a mitad
+   de camino del otro) para que no se vean como un solo anillo
+   sino como ondas continuas expandiéndose. */
+.whatsapp::before,
+.whatsapp::after {
+
+    content: "";
+
+    position: absolute;
+
+    top: 0;
+
+    left: 0;
+
+    width: 100%;
+
+    height: 100%;
+
+    border-radius: 50%;
+
+    background: #25D366;
+
+    z-index: -1;
+
+    animation: onda-whatsapp 2s ease-out infinite;
+
+}
+
+.whatsapp::after {
+
+    animation-delay: 1s;
+
+}
+
+
+.whatsapp:hover {
+
+    transform: scale(1.1);
+
+}
+
+/* BOTONES */
+
+.btn-warning {
+
+    background: #d4af37;
+
+    border: none;
+
+    color: black;
+
+    font-weight: bold;
+
+}
+
+
+.btn-warning:hover {
+
+    background: #b8962e;
+
+}
+
+h1, h2 {
+
+    font-weight: bold;
+
+}
+
+
+h2 {
+
+    color: #b8860b;
+
+}
+
+/* BOTON DE COMPRA */
+
+.btn-warning {
+
+    background-color: #d4af37;
+
+    border-color: #d4af37;
+
+    color: #000;
+
+    font-weight: bold;
+
+    padding: 12px 30px;
+
+}
+
+
+.btn-warning:hover {
+
+    background-color: #b8962e;
+
+    border-color: #b8962e;
+
+    transform: scale(1.05);
+
+}
+
+/* BARRA SUPERIOR */
+
+.top-bar{
+
+    background:#d4af37;
+
+    color:black;
+
+    font-size:14px;
+
+    padding:8px 0;
+
+    font-weight:bold;
+
+}
+
+@media (max-width: 767px) {
+    .top-bar .container {
+        flex-direction: column;
+        gap: 4px;
+        text-align: center;
+    }
+}
+
+.nav-link{
+
+    transition:.3s;
+
+}
+
+.nav-link:hover{
+
+    color:#d4af37 !important;
+
+}
+
+.navbar-brand{
+
+    transition:.3s;
+
+}
+
+.navbar-brand:hover{
+
+    color:#d4af37 !important;
+
+}
+
+.btn-warning{
+
+    transition:.3s;
+
+}
+
+.btn-warning:hover{
+
+    transform:scale(1.08);
+
+}
+
+.separador{
+
+    width:120px;
+
+    margin:60px auto;
+
+    border:3px solid #d4af37;
+
+    opacity:1;
+
+}
+/* FUENTE GENERAL */
+
+*{
+    font-family: 'Poppins', sans-serif;
+}
+/* MENÚ FIJO */
+
+.navbar{
+
+    position: sticky;
+
+    top: 0;
+
+    z-index: 1000;
+
+    box-shadow: 0 3px 10px rgba(0,0,0,.25);
+
+}
+.card img{
+
+    transition:.5s;
+
+}
+
+.card:hover img{
+
+    transform:scale(1.08);
+
+}
+@keyframes latido{
+
+    0%{
+        transform:scale(1);
+    }
+
+    50%{
+        transform:scale(1.15);
+    }
+
+    100%{
+        transform:scale(1);
+    }
+
+}
+
+@keyframes onda-whatsapp{
+
+    0%{
+        transform: scale(1);
+        opacity: 0.7;
+    }
+
+    100%{
+        transform: scale(1.9);
+        opacity: 0;
+    }
+
+}
+
+/* OFERTA DEL MES */
+
+.card{
+
+    transition: .4s ease;
+
+}
+
+.card:hover{
+
+    transform: translateY(-8px);
+
+    box-shadow: 0 15px 35px rgba(0,0,0,.25);
+
+}
+/* ICONOS */
+
+i{
+
+    color:#d4af37;
+
+}
+/* CARRUSEL */
+
+.hero-img{
+
+    height:600px;
+
+    object-fit:cover;
+
+    filter:brightness(45%);
+
+}
+
+
+
+.carousel-caption{
+
+    top:50%;
+
+    transform:translateY(-50%);
+
+}
+
+
+.carousel-caption h1{
+
+    font-size:55px;
+
+    font-weight:700;
+
+}
+.carousel-caption h1{
+
+    color:white;
+
+    text-shadow:2px 2px 8px black;
+
+}
+
+
+
+.carousel-caption p{
+
+    font-size:22px;
+
+}
+
+
+.carousel-caption .btn{
+
+    margin-top:20px;
+
+}
+
+@media (max-width: 767px) {
+    .carousel-caption h1 {
+        font-size: 28px;
+    }
+    .carousel-caption p {
+        font-size: 15px;
+    }
+    .carousel-caption .btn {
+        margin-top: 10px;
+    }
+}
+/* PRODUCTOS MÁS VENDIDOS */
+
+
+.card{
+
+    overflow:hidden;
+
+}
+
+
+.card img{
+
+    height:250px;
+
+    object-fit:cover;
+
+}
+
+
+.badge{
+
+    z-index:2;
+
+    font-size:14px;
+
+}
+/* TESTIMONIOS */
+
+
+.bi-person-circle{
+
+    color:#d4af37;
+
+}
+
+
+.card:hover{
+
+    transform:translateY(-8px);
+
+}
+/* PREGUNTAS FRECUENTES */
+
+
+.accordion-button:not(.collapsed){
+
+    background-color:#212529;
+
+    color:white;
+
+}
+
+
+.accordion-button:focus{
+
+    box-shadow:none;
+
+}
+/* MAPA */
+
+iframe{
+
+    border-radius:20px;
+
+}
+/* MAPA */
+
+.mapa-container{
+
+    width:80%;
+
+    height:350px;
+
+    overflow:hidden;
+
+    border-radius:20px;
+
+}
+
+
+.mapa-container iframe{
+
+    width:100%;
+
+    height:100%;
+
+}
+/* BOTÓN VOLVER ARRIBA */
+
+.volver-arriba{
+
+    position:fixed;
+
+    bottom:90px;
+
+    right:25px;
+
+    width:50px;
+
+    height:50px;
+
+    background:#212529;
+
+    color:#d4af37;
+
+    border:2px solid #d4af37;
+
+    border-radius:50%;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    text-decoration:none;
+
+    font-size:24px;
+
+    box-shadow:0 5px 20px rgba(0,0,0,.4);
+
+    transition:.3s;
+
+}
+
+
+.volver-arriba:hover{
+
+    background:#d4af37;
+
+    color:#212529;
+
+    transform:translateY(-8px);
+
+}
+/* COLOR DE LA FLECHA */
+
+.volver-arriba i{
+
+    color:#d4af37;
+
+}
+
+
+.volver-arriba:hover i{
+
+    color:#212529;
+
+}
+body{
+
+    font-family: 'Segoe UI', sans-serif;
+
+    background:#faf8f3;
+
+}
+h1,h2,h3{
+
+    font-weight:700;
+
+    color:#212529;
+
+}
+.btn-warning{
+
+    background:#d4af37;
+
+    border:none;
+
+    color:#000;
+
+    font-weight:600;
+
+}
+
+
+.btn-warning:hover{
+
+    background:#b8962e;
+
+    color:white;
+
+}
+.footer{
+
+    background:#212529;
+
+    color:white;
+
+    padding:40px 0;
+
+}
+
+
+.footer h3{
+
+    color:#d4af37;
+
+}
+.carousel-caption p{
+
+    color:white;
+
+    font-size:22px;
+
+    text-shadow:1px 1px 5px black;
+
+}
+.titulo-seccion{
+
+    color:#212529;
+
+    font-weight:700;
+
+    position:relative;
+
+}
+.titulo-seccion::after{
+
+    content:"";
+
+    display:block;
+
+    width:70px;
+
+    height:4px;
+
+    background:#d4af37;
+
+    margin:15px auto;
+
+    border-radius:10px;
+
+}
+/* TITULOS ESPECIALES */
+
+.titulo-dorado{
+
+    color:#d4af37 !important;
+
+    font-weight:700;
+
+    text-shadow:1px 1px 3px rgba(0,0,0,0.2);
+
+}
+.pagos{
+
+    background:#212529;
+
+    color:white;
+
+    padding:50px 0;
+
+}
+/* TARJETAS DE PRODUCTOS */
+
+
+.producto-card{
+
+    border:none;
+
+    border-radius:20px;
+
+    overflow:hidden;
+
+    box-shadow:0 5px 20px rgba(0,0,0,.15);
+
+    transition:.4s;
+
+}
+
+
+
+.producto-card:hover{
+
+    transform:translateY(-12px);
+
+    box-shadow:0 15px 30px rgba(0,0,0,.25);
+
+    border:2px solid #d4af37;
+
+}
+
+
+
+.imagen-producto{
+
+    height:280px;
+
+    object-fit:cover;
+
+    transition:.4s;
+
+}
+
+
+
+.producto-card:hover .imagen-producto{
+
+    transform:scale(1.08);
+
+}
+
+
+
+/* BOTÓN PRODUCTO */
+
+
+.btn-producto{
+
+    background:#212529;
+
+    color:#d4af37;
+
+    border:1px solid #d4af37;
+
+    padding:10px 25px;
+
+    font-weight:600;
+
+}
+
+
+
+.btn-producto:hover{
+
+    background:#d4af37;
+
+    color:#212529;
+
+}
+/* AVISO DE EDAD */
+
+
+#avisoEdad{
+
+    position:fixed;
+
+    top:0;
+
+    left:0;
+
+    width:100%;
+
+    height:100%;
+
+    background:rgba(0,0,0,.85);
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    z-index:9999;
+
+}
+
+
+
+.aviso-contenido{
+
+    background:#212529;
+
+    color:white;
+
+    text-align:center;
+
+    padding:40px;
+
+    border-radius:20px;
+
+    border:2px solid #d4af37;
+
+}
+
+
+
+.aviso-contenido h2{
+
+    color:#d4af37;
+
+}
+
+
+
+.aviso-contenido button{
+
+    background:#d4af37;
+
+    border:none;
+
+    padding:12px 30px;
+
+    border-radius:25px;
+
+    font-weight:bold;
+
+}
+
+.aviso-botones{
+
+    display:flex;
+
+    gap:15px;
+
+    justify-content:center;
+
+    margin-top:10px;
+
+}
+
+.aviso-contenido .btn-no-edad{
+
+    background:transparent;
+
+    border:2px solid #6c757d;
+
+    color:#adb5bd;
+
+}
+
+.aviso-contenido .btn-no-edad:hover{
+
+    background:#6c757d;
+
+    color:white;
+
+}
+/* PROMOCIONES */
+
+
+.promociones{
+
+    background:#212529;
+
+    padding:60px 0;
+
+    color:white;
+
+}
+
+
+
+.promociones h2{
+
+    color:#d4af37;
+
+}
+
+
+
+.promo-card{
+
+    background:white;
+
+    color:#212529;
+
+    padding:30px;
+
+    border-radius:20px;
+
+    text-align:center;
+
+    height:100%;
+
+    position:relative;
+
+    transition:.4s;
+
+    box-shadow:0 5px 20px rgba(0,0,0,.2);
+    .promo-card{
+
+    transition:.4s;
+
+}
+
+
+.promo-card:hover{
+
+    transform:scale(1.05);
+
+}
+
+}
+
+
+
+.promo-card:hover{
+
+    transform:translateY(-10px);
+
+    border:2px solid #d4af37;
+
+}
+
+
+
+.promo-card h3{
+
+    margin-top:20px;
+
+}
+
+
+
+.promo-card h4{
+
+    color:#d4af37;
+
+    font-size:28px;
+
+}
+
+
+
+.etiqueta{
+
+    position:absolute;
+
+    top:15px;
+
+    right:15px;
+
+    background:#d4af37;
+
+    color:black;
+
+    padding:5px 15px;
+
+    border-radius:20px;
+
+    font-weight:bold;
+
+    font-size:13px;
+
+}
+/* MARCAS */
+
+
+.marcas{
+
+    padding:60px 0;
+
+    background:#faf8f3;
+
+}
+
+
+
+.marcas h2{
+
+    color:#212529;
+
+}
+
+
+
+.marca-card{
+
+    background:white;
+
+    padding:30px;
+
+    border-radius:20px;
+
+    font-size:45px;
+
+    box-shadow:0 5px 15px rgba(0,0,0,.1);
+
+    transition:.3s;
+    .marca-card{
+
+    transition:.4s;
+
+}
+
+
+.marca-card:hover{
+
+    transform:rotate(2deg) scale(1.05);
+
+}
+
+}
+
+
+
+.marca-card h5{
+
+    margin-top:15px;
+
+}
+
+
+
+.marca-card:hover{
+
+    transform:translateY(-10px);
+
+    border:2px solid #d4af37;
+
+}
+/* LOGO */
+
+
+.logo{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:10px;
+
+    color:white !important;
+
+    font-size:18px;
+
+    line-height:1.1;
+
+}
+
+
+
+.logo strong{
+
+    display:block;
+
+    color:#d4af37;
+
+    font-size:22px;
+
+}
+
+
+
+.logo-icon{
+
+    font-size:35px;
+
+}
+.producto-img{
+    max-width: 510px;
+    width: 100%;
+    display: block;
+    margin: 0 auto;
+}
+/* ============================================================
+   CARRITO DE COMPRAS
+   ============================================================ */
+.btn-carrito {
+    position: relative;
+    background: none;
+    border: none;
+    color: #d4af37;
+    font-size: 24px;
+    padding: 8px;
+    line-height: 1;
+}
+
+.carrito-contador {
+    position: absolute;
+    top: -2px;
+    right: -2px;
+    background: #d4af37;
+    color: #212529;
+    font-size: 11px;
+    font-weight: bold;
+    min-width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 0 4px;
+}
+
+.carrito-item-img {
+    width: 60px;
+    height: 60px;
+    object-fit: cover;
+    border-radius: 10px;
+}
+
+.btn-qty {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    border: 1px solid #d4af37;
+    background: transparent;
+    color: #d4af37;
+    font-weight: bold;
+    line-height: 1;
+    transition: .3s;
+}
+
+.btn-qty:hover {
+    background: #d4af37;
+    color: #212529;
+}
+
+.btn-quitar {
+    background: none;
+    border: none;
+    color: #dc3545;
+    font-size: 16px;
+}
+
+.input-cantidad {
+    width: 55px;
+    text-align: center;
+    border-radius: 8px;
+    border: 1px solid #ced4da;
+    padding: 4px;
+}
+
+.offcanvas #carritoVacio {
+    display: none;
+}
+
+/* ============================================================
+   BARRA MÍNIMA DE LAS PÁGINAS DE PRODUCTO
+   ============================================================ */
+.mini-header {
+    background: #212529;
+    padding: 15px 6%;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    box-shadow: 0 3px 10px rgba(0,0,0,.25);
+}
+
+/* ============================================================
+   CALCULADORA "¿CUÁNTO DEBO COMPRAR?"
+   ============================================================ */
+.calculadora-card {
+    max-width: 700px;
+    background: white;
+    border-radius: 20px;
+    padding: 40px;
+    box-shadow: 0 5px 20px rgba(0,0,0,.1);
+}
+
+.resultado-calculadora {
+    background: #faf8f3;
+    border-left: 4px solid #d4af37;
+    border-radius: 10px;
+    padding: 20px;
+}
+
+/* ============================================================
+   MENÚ DESPLEGABLE DE CONTACTO (dirección, WhatsApp, horario)
+   ============================================================ */
+.dropdown-toggle::after {
+    margin-left: 8px;
+}
+
+.dropdown-menu-contacto {
+    background: #212529;
+    border: 1px solid #d4af37;
+    border-radius: 12px;
+    padding: 8px;
+    min-width: 280px;
+}
+
+.dropdown-menu-contacto .dropdown-item {
+    color: #f5f5f5;
+    padding: 10px 12px;
+    border-radius: 8px;
+    white-space: normal;
+}
+
+.dropdown-menu-contacto .dropdown-item:hover,
+.dropdown-menu-contacto .dropdown-item:focus {
+    background: #d4af37;
+    color: #212529;
+}
+
+.dropdown-menu-contacto .dropdown-item-text {
+    padding: 10px 12px;
+    display: block;
+}
+
+.dropdown-menu-contacto i {
+    width: 18px;
+    display: inline-block;
+}
+
+/* ============================================================
+   HEADER DEL CARRITO (minimizar / vaciar)
+   ============================================================ */
+.carrito-header-botones {
+    display: flex;
+    gap: 8px;
+}
+
+.btn-carrito-header {
+    background: transparent;
+    border: none;
+    color: white;
+    font-size: 18px;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: .3s;
+}
+
+.btn-carrito-header:hover {
+    background: rgba(255,255,255,.15);
+}
+
+/* ============================================================
+   CATÁLOGO COMPLETO
+   ============================================================ */
+.catalogo-buscador {
+    max-width: 500px;
+}
+
+.pildoras-categoria {
+    display: flex;
+    gap: 10px;
+    overflow-x: auto;
+    padding-bottom: 10px;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+.pildoras-categoria::-webkit-scrollbar {
+    display: none;
+}
+
+/* En pantallas de celular, las 12 píldoras (Todos + 11 categorías) no
+   entran en una fila — ahí SÍ tiene sentido deslizar horizontalmente.
+   Desde tablet para arriba, hay espacio de sobra: que salten de línea
+   en vez de esconderse fuera de la pantalla. */
+@media (min-width: 768px) {
+    .pildoras-categoria {
+        flex-wrap: wrap;
+        overflow-x: visible;
+        padding-bottom: 0;
+    }
+}
+
+.pildora-categoria {
+    flex: 0 0 auto;
+    background: white;
+    border: 1px solid #d4af37;
+    color: #212529;
+    padding: 8px 18px;
+    border-radius: 20px;
+    font-size: 14px;
+    white-space: nowrap;
+    transition: .3s;
+}
+
+.pildora-categoria:hover {
+    background: #faf3df;
+}
+
+.pildora-categoria.activa {
+    background: #d4af37;
+    color: #212529;
+    font-weight: bold;
+}
+
+.badge-catalogo {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    z-index: 2;
+    font-size: 11px;
+}
+
+/* ============================================================
+   PANEL ADMIN — pantalla de login
+   ============================================================ */
+.admin-login-fondo {
+    min-height: 100vh;
+    background: #212529;
+    padding: 20px;
+}
+
+.admin-login-card {
+    background: white;
+    border-radius: 20px;
+    padding: 40px;
+    max-width: 380px;
+    width: 100%;
+    box-shadow: 0 10px 30px rgba(0,0,0,.3);
+}
+
+/* ============================================================
+   PANEL ADMIN — estilo tipo dashboard, deliberadamente distinto
+   al dorado/oscuro de la tienda pública (ver Fundamentacion de
+   decisiones: un panel de trabajo no lleva la piel de marca del
+   sitio de clientes).
+   ============================================================ */
+.admin-login-fondo {
+    min-height: 100vh;
+    background: #f8f9fa;
+    padding: 20px;
+}
+
+.admin-login-card {
+    background: white;
+    border: 1px solid #e9ecef;
+    border-radius: 16px;
+    padding: 40px;
+    max-width: 380px;
+    width: 100%;
+}
+
+.admin-shell {
+    min-height: 100vh;
+    background: #f8f9fa;
+}
+
+.admin-topbar {
+    background: white;
+    border-bottom: 1px solid #e9ecef;
+    padding: 12px 20px;
+}
+
+.admin-sidebar {
+    width: 240px;
+    background: white;
+}
+
+.admin-sidebar .offcanvas-header {
+    border-bottom: 1px solid #e9ecef;
+}
+
+@media (min-width: 768px) {
+    .admin-sidebar {
+        border-right: 1px solid #e9ecef;
+    }
+}
+
+.admin-nav-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 14px;
+    border-radius: 8px;
+    color: #495057;
+    text-decoration: none;
+    margin-bottom: 4px;
+    font-size: 14px;
+}
+
+.admin-nav-item:hover {
+    background: #f1f3f5;
+    color: #212529;
+}
+
+.admin-nav-item.activo {
+    background: #212529;
+    color: white;
+}
+
+.admin-nav-item.deshabilitado {
+    opacity: .5;
+    cursor: default;
+}
+
+.admin-pill {
+    flex: 0 0 auto;
+    border: 1px solid #dee2e6;
+    padding: 6px 16px;
+    border-radius: 20px;
+    font-size: 13px;
+    color: #495057;
+    background: white;
+    white-space: nowrap;
+}
+
+.admin-pill.activo {
+    background: #212529;
+    color: white;
+    border-color: #212529;
+}
+
+.admin-btn-nuevo {
+    background: #212529;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 8px 16px;
+    font-size: 14px;
+    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.admin-product-card {
+    border: 1px solid #e9ecef;
+    border-radius: 12px;
+    overflow: hidden;
+    background: white;
+}
+
+.admin-product-card-img {
+    background: #f1f3f5;
+    height: 110px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    color: #adb5bd;
+    font-size: 28px;
+}
+
+.admin-badge {
+    position: absolute;
+    top: 8px;
+    left: 8px;
+    font-size: 11px;
+    font-weight: 600;
+    padding: 3px 10px;
+    border-radius: 20px;
+}
+
+.admin-badge.mas-vendido { background: #d1e7dd; color: #0f5132; }
+.admin-badge.nuevo { background: #cfe2ff; color: #084298; }
+.admin-badge.recomendado { background: #fff3cd; color: #664d03; }
