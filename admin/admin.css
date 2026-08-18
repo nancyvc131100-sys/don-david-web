@@ -22,6 +22,7 @@
 .admin-shell {
     min-height: 100vh;
     background: #f8f9fa;
+    overflow-x: hidden;
 }
 
 .admin-topbar {

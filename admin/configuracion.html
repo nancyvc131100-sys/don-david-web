@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Configuración - Licorería Don David</title>
+<link rel="icon" type="image/svg+xml" href="../favicon.svg">
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
+
+<link rel="stylesheet" href="../style.css">
+<link rel="stylesheet" href="admin.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+</head>
+
+<body>
+
+<div class="admin-shell d-flex" id="panelContenido" style="display:none !important;">
+
+    <div class="offcanvas-md offcanvas-start admin-sidebar" tabindex="-1" id="sidebarAdmin">
+
+        <div class="offcanvas-header">
+            <span class="fw-bold">🍺 Panel Don David</span>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#sidebarAdmin"></button>
+        </div>
+
+        <div class="offcanvas-body d-flex flex-column">
+            <nav class="nav flex-column flex-grow-1">
+                <a href="panel.html" class="admin-nav-item"><i class="bi bi-box-seam"></i> Productos</a>
+                <a href="pedidos.html" class="admin-nav-item"><i class="bi bi-receipt"></i> Pedidos y ventas</a>
+                <a href="configuracion.html" class="admin-nav-item activo" id="navConfig"><i class="bi bi-gear"></i> Configuración</a>
+            </nav>
+        </div>
+
+    </div>
+
+    <div class="flex-grow-1">
+
+        <div class="admin-topbar d-flex justify-content-between align-items-center">
+            <button type="button" class="btn d-md-none" data-bs-toggle="offcanvas" data-bs-target="#sidebarAdmin" data-bs-backdrop="false">
+                <i class="bi bi-list" style="font-size:22px;"></i>
+            </button>
+            <span class="text-secondary" id="panelSaludo" style="font-size:14px;"></span>
+            <button type="button" class="btn btn-outline-dark btn-sm" onclick="cerrarSesion()" title="Cerrar sesión">
+                <i class="bi bi-box-arrow-right"></i>
+                <span class="btn-cerrar-sesion-texto">Cerrar sesión</span>
+            </button>
+        </div>
+
+        <div class="container-fluid p-4" style="max-width:600px;">
+
+            <h5 class="mb-4">Configuración del negocio</h5>
+
+            <form id="formConfiguracion">
+
+                <input type="hidden" id="cfLogoActual">
+
+                <div class="mb-3">
+                    <label class="form-label">Logo</label><br>
+                    <img id="cfLogoPreview" style="display:none; width:70px; height:70px; object-fit:cover; border-radius:12px; margin-bottom:8px;" alt="Logo actual">
+                    <input type="file" class="form-control" id="cfLogo" accept="image/*">
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Dirección</label>
+                    <input type="text" class="form-control" id="cfDireccion" required>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Teléfono / WhatsApp</label>
+                    <input type="text" class="form-control" id="cfTelefono" required>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Horario de atención</label>
+                    <input type="text" class="form-control" id="cfHorario" required>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">¿Quiénes somos?</label>
+                    <div class="d-flex gap-2 mb-1">
+                        <button type="button" class="btn btn-outline-secondary" onclick="aplicarFormatoConfig('negrita')" title="Negrita" style="min-width:52px; font-size:16px;"><b>N</b></button>
+                        <button type="button" class="btn btn-outline-secondary" onclick="aplicarFormatoConfig('lista')" title="Agregar viñeta" style="font-size:16px;">+ Viñeta</button>
+                    </div>
+                    <textarea class="form-control" id="cfDescripcion" rows="4"></textarea>
+                </div>
+
+                <div id="cfError" class="alert alert-danger py-2" style="display:none; font-size:13px;"></div>
+                <div id="cfExito" class="alert alert-success py-2" style="display:none; font-size:13px;">Guardado correctamente.</div>
+
+                <button type="submit" class="btn btn-dark w-100" id="btnGuardarConfig">Guardar cambios</button>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</div>
+
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="../js/config.js"></script>
+<script src="admin.js"></script>
+<script src="configuracion.js"></script>
+<script>
+  exigirSesion().then(function (perfil) {
+    if (!perfil) return; // exigirSesion ya redirigió a login.html
+
+    // Esta pantalla es exclusiva del administrador — si alguien
+    // con rol "trabajador" llega aquí directo por la URL, se le
+    // regresa a Productos en vez de dejarlo entrar.
+    if (perfil.rol !== "administrador") {
+      window.location.href = "panel.html";
+      return;
+    }
+
+    document.getElementById("panelSaludo").textContent = perfil.nombre + " (" + perfil.rol + ")";
+    document.getElementById("panelContenido").style.display = "flex";
+
+    inicializarConfiguracionPanel();
+  });
+</script>
+
+</body>
+
+</html>

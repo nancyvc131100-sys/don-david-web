@@ -1,12 +1,3 @@
-/* ============================================================
-   LICORERÍA DON DAVID — admin/admin.js
-   ============================================================
-   Lógica compartida por TODAS las páginas del panel: verificar
-   sesión, iniciar/cerrar sesión, y saber el rol de quien está
-   conectado. Es el equivalente, para el panel, de lo que
-   partials.js es para el sitio público.
-   ============================================================ */
-
 let _clienteSupabaseInstancia = null;
 
 function clienteSupabase() {
@@ -16,9 +7,6 @@ function clienteSupabase() {
   return _clienteSupabaseInstancia;
 }
 
-// ------------------------------------------------------------
-// LOGIN (solo se usa en login.html)
-// ------------------------------------------------------------
 async function iniciarSesion(event) {
   event.preventDefault();
 
@@ -31,10 +19,6 @@ async function iniciarSesion(event) {
   boton.disabled = true;
   boton.textContent = "Ingresando...";
 
-  // Si la conexión tarda demasiado (o se corta a medias, algo
-  // más común en datos móviles que en wifi), esto evita que el
-  // botón se quede en "Ingresando..." para siempre sin avisar
-  // nada. A los 15 segundos se corta solo y muestra un mensaje.
   const tiempoAgotado = new Promise(function (_, reject) {
     setTimeout(function () { reject(new Error("TIEMPO_AGOTADO")); }, 15000);
   });
@@ -87,12 +71,6 @@ async function iniciarSesion(event) {
   }
 }
 
-// ------------------------------------------------------------
-// GUARDIA DE SESIÓN (se usa en panel.html y en cada pantalla
-// nueva que se agregue al panel). Si no hay sesión válida,
-// manda de vuelta al login. Si la hay, devuelve el perfil
-// (nombre + rol) para que cada pantalla lo use.
-// ------------------------------------------------------------
 async function exigirSesion() {
   const cliente = clienteSupabase();
   const { data: { session } } = await cliente.auth.getSession();

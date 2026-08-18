@@ -21,10 +21,6 @@ async function cargarProductosPanel() {
   const cargando = document.getElementById("productosPanelCargando");
   if (cargando) cargando.style.display = "block";
 
-  // A diferencia del sitio público (que solo pide activo=true),
-  // el panel necesita ver TODO, incluida la papelera — por eso
-  // esta consulta no filtra por "activo" y se decide qué mostrar
-  // en el navegador, según la píldora elegida.
   const { data, error } = await cliente.from("productos").select("*").order("creado_en", { ascending: false });
 
   if (cargando) cargando.style.display = "none";
@@ -39,9 +35,13 @@ async function cargarProductosPanel() {
 }
 
 function productosFiltrados() {
+  const buscador = document.getElementById("buscadorProductosPanel");
+  const texto = buscador ? buscador.value.trim().toLowerCase() : "";
+
   return productosPanelCache.filter(function (p) {
+    if (texto && p.nombre.toLowerCase().indexOf(texto) === -1) return false;
     if (filtroPanelActual === "papelera") return p.activo === false;
-    if (p.activo === false) return false; // la papelera no se mezcla con las demás vistas
+    if (p.activo === false) return false;
     if (filtroPanelActual === "todos") return true;
     if (filtroPanelActual === "oferta") return !!p.precio_oferta;
     return p.etiqueta === filtroPanelActual;
@@ -163,7 +163,7 @@ function generarIdDesdeNombre(nombre) {
     .normalize("NFD").replace(/[\u0300-\u036f]/g, "")
     .replace(/[^a-z0-9]+/g, "-")
     .replace(/^-+|-+$/g, "");
-  return base + "-" + Date.now().toString(36).slice(-4); // sufijo corto para evitar choques entre productos con nombres parecidos
+  return base + "-" + Date.now().toString(36).slice(-4);
 }
 
 async function subirImagenProducto(archivo, idProducto) {
@@ -257,12 +257,42 @@ async function eliminarDefinitivo(id) {
 }
 
 // ------------------------------------------------------------
+// FORMATO DE DESCRIPCIÓN — negrita y listas simples, sin un
+// editor de texto completo. Envuelve la selección con **texto**
+// (negrita) o antepone "- " a la línea actual (viñeta). Esas
+// marcas se guardan tal cual en la base de datos, y
+// formatearDescripcionHTML() (en script.js) las convierte a
+// negrita/viñetas de verdad al mostrarlas en producto.html.
+// ------------------------------------------------------------
+function aplicarFormatoDescripcion(tipo) {
+  const textarea = document.getElementById("fpDescripcion");
+
+  if (tipo === "negrita") {
+    const inicio = textarea.selectionStart;
+    const fin = textarea.selectionEnd;
+    const seleccionado = textarea.value.slice(inicio, fin);
+    const contenido = seleccionado || "texto";
+    textarea.value = textarea.value.slice(0, inicio) + "**" + contenido + "**" + textarea.value.slice(fin);
+    textarea.focus();
+    textarea.setSelectionRange(inicio + 2, inicio + 2 + contenido.length);
+  } else if (tipo === "lista") {
+    const necesitaSalto = textarea.value.length > 0 && !textarea.value.endsWith("\n");
+    textarea.value += (necesitaSalto ? "\n" : "") + "- ";
+    textarea.focus();
+    textarea.setSelectionRange(textarea.value.length, textarea.value.length);
+  }
+}
+
+// ------------------------------------------------------------
 // ARRANQUE
 // ------------------------------------------------------------
 function inicializarProductosPanel() {
   if (!document.getElementById("grillaProductosPanel")) return;
   renderizarPildorasPanel();
   cargarProductosPanel();
+
+  const buscador = document.getElementById("buscadorProductosPanel");
+  if (buscador) buscador.addEventListener("keyup", renderizarGrillaProductosPanel);
 
   document.getElementById("fpImagen").addEventListener("change", function () {
     const archivo = this.files[0];
