@@ -1,0 +1,168 @@
+/* ============================================================
+   PANEL ADMIN — estilo tipo dashboard, deliberadamente distinto
+   al dorado/oscuro de la tienda pública (ver Fundamentacion de
+   decisiones: un panel de trabajo no lleva la piel de marca del
+   sitio de clientes).
+   ============================================================ */
+.admin-login-fondo {
+    min-height: 100vh;
+    background: #f8f9fa;
+    padding: 20px;
+}
+
+.admin-login-card {
+    background: white;
+    border: 1px solid #e9ecef;
+    border-radius: 16px;
+    padding: 40px;
+    max-width: 380px;
+    width: 100%;
+}
+
+.admin-shell {
+    min-height: 100vh;
+    background: #f8f9fa;
+}
+
+.admin-topbar {
+    background: white;
+    border-bottom: 1px solid #e9ecef;
+    padding: 12px 20px;
+}
+
+/* En celular, el saludo con nombre+rol puede ser largo — que no
+   empuje "Cerrar sesión" fuera de la pantalla. Se acomoda en
+   una sola línea, recortando el texto si hace falta, y el
+   botón de cerrar sesión se reduce a solo el ícono. */
+@media (max-width: 767px) {
+    .admin-topbar {
+        gap: 8px;
+    }
+    #panelSaludo {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        flex: 1 1 auto;
+        min-width: 0;
+    }
+    .admin-topbar .btn-cerrar-sesion-texto {
+        display: none;
+    }
+}
+
+.admin-sidebar {
+    width: 240px;
+    background: white;
+}
+
+/* En celular, el panel desplegable no debe ocupar toda la
+   pantalla para solo 3 enlaces — se ve como un menú flotante
+   compacto, del alto justo que necesita su contenido. */
+@media (max-width: 767px) {
+    .admin-sidebar.offcanvas-start {
+        height: auto;
+        max-height: 75vh;
+        top: 0;
+        border-radius: 0 0 16px 0;
+        box-shadow: 4px 4px 20px rgba(0,0,0,.15);
+    }
+}
+
+.admin-sidebar .offcanvas-header {
+    border-bottom: 1px solid #e9ecef;
+}
+
+@media (min-width: 768px) {
+    .admin-sidebar {
+        border-right: 1px solid #e9ecef;
+    }
+}
+
+.admin-nav-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 14px;
+    border-radius: 8px;
+    color: #495057;
+    text-decoration: none;
+    margin-bottom: 4px;
+    font-size: 14px;
+}
+
+.admin-nav-item:hover {
+    background: #f1f3f5;
+    color: #212529;
+}
+
+.admin-nav-item.activo {
+    background: #212529;
+    color: white;
+}
+
+.admin-nav-item.deshabilitado {
+    opacity: .5;
+    cursor: default;
+}
+
+.admin-pill {
+    flex: 0 0 auto;
+    border: 1px solid #dee2e6;
+    padding: 6px 16px;
+    border-radius: 20px;
+    font-size: 13px;
+    color: #495057;
+    background: white;
+    white-space: nowrap;
+}
+
+.admin-pill.activo {
+    background: #212529;
+    color: white;
+    border-color: #212529;
+}
+
+.admin-btn-nuevo {
+    background: #212529;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 8px 16px;
+    font-size: 14px;
+    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.admin-product-card {
+    border: 1px solid #e9ecef;
+    border-radius: 12px;
+    overflow: hidden;
+    background: white;
+}
+
+.admin-product-card-img {
+    background: #f1f3f5;
+    height: 110px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    color: #adb5bd;
+    font-size: 28px;
+}
+
+.admin-badge {
+    position: absolute;
+    top: 8px;
+    left: 8px;
+    font-size: 11px;
+    font-weight: 600;
+    padding: 3px 10px;
+    border-radius: 20px;
+}
+
+.admin-badge.mas-vendido { background: #d1e7dd; color: #0f5132; }
+.admin-badge.nuevo { background: #cfe2ff; color: #084298; }
+.admin-badge.recomendado { background: #fff3cd; color: #664d03; }
