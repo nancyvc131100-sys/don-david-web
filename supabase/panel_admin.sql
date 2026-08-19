@@ -1,20 +1,3 @@
--- ============================================================
--- LICORERÍA DON DAVID — panel_admin.sql
--- ============================================================
--- Se corre DESPUÉS de schema.sql (el mismo proyecto de Supabase,
--- SQL Editor → New query → pega todo esto → Run).
---
--- Agrega lo necesario para el panel de David y su ayudante:
--- roles de acceso, promociones/carrusel, registro de ventas con
--- método de pago, y los datos de contacto editables.
--- ============================================================
-
--- --------------------------------------------------------
--- 1. PERFILES — quién es quién dentro del sistema de login
---    que ya trae Supabase (auth.users). No se crea un sistema
---    de login desde cero: cada fila aquí "etiqueta" una cuenta
---    ya existente en auth.users con un nombre y un rol.
--- --------------------------------------------------------
 create table if not exists perfiles (
   id         uuid primary key references auth.users(id) on delete cascade,
   nombre     text not null,
@@ -155,5 +138,35 @@ create policy "Staff ve capturas de pago"
   on storage.objects for select
   using (
     bucket_id = 'capturas-pago'
+    and exists (select 1 from perfiles p where p.id = auth.uid())
+  );
+
+
+insert into storage.buckets (id, name, public)
+values ('productos-imagenes', 'productos-imagenes', true)
+on conflict (id) do nothing;
+
+create policy "Cualquiera ve las imágenes de productos"
+  on storage.objects for select
+  using (bucket_id = 'productos-imagenes');
+
+create policy "Staff sube imágenes de productos"
+  on storage.objects for insert
+  with check (
+    bucket_id = 'productos-imagenes'
+    and exists (select 1 from perfiles p where p.id = auth.uid())
+  );
+
+create policy "Staff actualiza imágenes de productos"
+  on storage.objects for update
+  using (
+    bucket_id = 'productos-imagenes'
+    and exists (select 1 from perfiles p where p.id = auth.uid())
+  );
+
+create policy "Staff elimina imágenes de productos"
+  on storage.objects for delete
+  using (
+    bucket_id = 'productos-imagenes'
     and exists (select 1 from perfiles p where p.id = auth.uid())
   );
