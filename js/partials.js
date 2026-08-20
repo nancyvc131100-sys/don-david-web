@@ -100,7 +100,7 @@ function insertarMenuContacto() {
   const elementos = document.querySelectorAll(".dropdown-menu-contacto");
   if (elementos.length === 0) return;
 
-  const direccion = "Jr. Cajamarca 170, Villa María del Triunfo";
+  const direccion = CONFIG_NEGOCIO.direccion;
   const mapsUrl = "https://www.google.com/maps?q=" + encodeURIComponent(direccion);
   const mensajeWhatsapp = encodeURIComponent("Hola, estoy interesado en tus productos, ¿me envías tu catálogo por favor?");
   const whatsappUrl = "https://wa.me/" + WHATSAPP_NUMERO + "?text=" + mensajeWhatsapp;
@@ -110,10 +110,10 @@ function insertarMenuContacto() {
       '<i class="bi bi-geo-alt-fill"></i> ' + direccion +
     '</a></li>' +
     '<li><a class="dropdown-item" href="' + whatsappUrl + '" target="_blank" rel="noopener">' +
-      '<i class="bi bi-whatsapp"></i> +51 986 708 039' +
+      '<i class="bi bi-whatsapp"></i> ' + CONFIG_NEGOCIO.telefono +
     '</a></li>' +
     '<li><span class="dropdown-item-text text-secondary">' +
-      '<i class="bi bi-clock-fill"></i> Lun - Dom, 10:00 AM - 11:00 PM' +
+      '<i class="bi bi-clock-fill"></i> ' + CONFIG_NEGOCIO.horario +
     '</span></li>';
 
   elementos.forEach(function (el) {

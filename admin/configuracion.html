@@ -57,6 +57,16 @@
 
             <h5 class="mb-4">Configuración del negocio</h5>
 
+            <ul class="nav nav-pills mb-4 flex-nowrap" id="configTabs" style="overflow-x:auto;">
+                <li class="nav-item"><button type="button" class="nav-link active" data-tab="general" onclick="cambiarTabConfig('general')">General</button></li>
+                <li class="nav-item"><button type="button" class="nav-link" data-tab="marca" onclick="cambiarTabConfig('marca')">Marcas</button></li>
+                <li class="nav-item"><button type="button" class="nav-link" data-tab="metodo_pago" onclick="cambiarTabConfig('metodo_pago')">Métodos de pago</button></li>
+                <li class="nav-item"><button type="button" class="nav-link" data-tab="por_que_elegirnos" onclick="cambiarTabConfig('por_que_elegirnos')">Por qué elegirnos</button></li>
+                <li class="nav-item"><button type="button" class="nav-link" data-tab="preguntas" onclick="cambiarTabConfig('preguntas')">Preguntas</button></li>
+            </ul>
+
+            <div id="tabGeneral">
+
             <form id="formConfiguracion">
 
                 <input type="hidden" id="cfLogoActual">
@@ -98,10 +108,114 @@
 
             </form>
 
+            </div>
+
+            <!-- Marcas, Métodos de pago y Por qué elegirnos comparten
+                 esta misma pantalla — solo cambia qué "seccion" se
+                 carga (ver cambiarTabConfig en configuracion.js). -->
+            <div id="tabTarjetas" style="display:none;">
+
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h6 class="mb-0" id="tituloSeccionTarjetas">Marcas</h6>
+                    <button type="button" class="admin-btn-nuevo" onclick="abrirModalTarjeta()">
+                        <i class="bi bi-plus-lg"></i> Agregar
+                    </button>
+                </div>
+
+                <div id="listaTarjetas" class="d-flex flex-column gap-2"></div>
+
+            </div>
+
+            <div id="tabPreguntas" style="display:none;">
+
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h6 class="mb-0">Preguntas frecuentes</h6>
+                    <button type="button" class="admin-btn-nuevo" onclick="abrirModalPregunta()">
+                        <i class="bi bi-plus-lg"></i> Agregar
+                    </button>
+                </div>
+
+                <div id="listaPreguntas" class="d-flex flex-column gap-2"></div>
+
+            </div>
+
         </div>
 
     </div>
 
+</div>
+
+<!-- MODAL: tarjeta (marca / método de pago / por qué elegirnos) -->
+<div class="modal fade" id="modalTarjeta" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <form id="formTarjeta" onsubmit="guardarTarjeta(event)">
+        <div class="modal-header">
+          <h5 class="modal-title" id="modalTarjetaTitulo">Nueva tarjeta</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body">
+          <input type="hidden" id="tjId">
+          <input type="hidden" id="tjSeccion">
+
+          <div class="mb-3">
+            <label class="form-label">Ícono</label>
+            <input type="text" class="form-control" id="tjIcono" placeholder="Un emoji, ej: 🥃">
+            <p class="text-secondary mt-1 mb-0" style="font-size:11px;">Opcional. Solo un emoji, tal cual se va a ver.</p>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">Título</label>
+            <input type="text" class="form-control" id="tjTitulo" required>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">Descripción (opcional)</label>
+            <textarea class="form-control" id="tjDescripcion" rows="2"></textarea>
+          </div>
+
+          <div id="tjError" class="alert alert-danger py-2" style="display:none; font-size:13px;"></div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancelar</button>
+          <button type="submit" class="btn btn-dark">Guardar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: pregunta frecuente -->
+<div class="modal fade" id="modalPregunta" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <form id="formPregunta" onsubmit="guardarPregunta(event)">
+        <div class="modal-header">
+          <h5 class="modal-title" id="modalPreguntaTitulo">Nueva pregunta</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body">
+          <input type="hidden" id="pgId">
+
+          <div class="mb-3">
+            <label class="form-label">Pregunta</label>
+            <input type="text" class="form-control" id="pgPregunta" required>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">Respuesta</label>
+            <textarea class="form-control" id="pgRespuesta" rows="3" required></textarea>
+          </div>
+
+          <div id="pgError" class="alert alert-danger py-2" style="display:none; font-size:13px;"></div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancelar</button>
+          <button type="submit" class="btn btn-dark">Guardar</button>
+        </div>
+      </form>
+    </div>
+  </div>
 </div>
 
 <!-- Bootstrap JS -->

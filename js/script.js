@@ -207,6 +207,57 @@ function supabaseConfigurado() {
   return SUPABASE_URL.indexOf("http") === 0 && SUPABASE_ANON_KEY.length > 20;
 }
 
+let CONFIG_NEGOCIO = {
+  direccion: "Jr. Cajamarca 170, Villa María del Triunfo",
+  telefono: "+51 986 708 039",
+  horario: "Lunes - Domingo | 10:00 AM - 11:00 PM",
+  descripcion: "Somos Licorería Don David, una empresa dedicada a ofrecer bebidas de calidad para tus mejores momentos."
+};
+
+async function   cargarProductosDesdeSupabase()
+                 {
+  if (!supabaseConfigurado() || typeof window.supabase === "undefined") return;
+
+  try {
+    const cliente = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+    const { data, error } = await cliente.from("configuracion_negocio").select("*").eq("id", 1).single();
+
+    if (error || !data) {
+      console.warn("No se pudo cargar la configuración del negocio; se usan los valores por defecto.", error);
+      return;
+    }
+
+    CONFIG_NEGOCIO = {
+      direccion: data.direccion || CONFIG_NEGOCIO.direccion,
+      telefono: data.telefono || CONFIG_NEGOCIO.telefono,
+      horario: data.horario || CONFIG_NEGOCIO.horario,
+      descripcion: data.descripcion || CONFIG_NEGOCIO.descripcion
+    };
+
+    aplicarConfiguracionNegocio();
+  } catch (e) {
+    console.warn("Error cargando configuración del negocio:", e);
+  }
+}
+
+function aplicarConfiguracionNegocio() {
+  const tbTelefono = document.getElementById("topbarTelefono");
+  if (tbTelefono) tbTelefono.textContent = CONFIG_NEGOCIO.telefono;
+  const tbHorario = document.getElementById("topbarHorario");
+  if (tbHorario) tbHorario.textContent = CONFIG_NEGOCIO.horario;
+
+  const nDireccion = document.getElementById("nosotrosDireccion");
+  if (nDireccion) nDireccion.textContent = CONFIG_NEGOCIO.direccion;
+  const nTelefono = document.getElementById("nosotrosTelefono");
+  if (nTelefono) nTelefono.textContent = CONFIG_NEGOCIO.telefono;
+  const nHorario = document.getElementById("nosotrosHorario");
+  if (nHorario) nHorario.textContent = CONFIG_NEGOCIO.horario;
+  const nDescripcion = document.getElementById("quienesSomosTexto");
+  if (nDescripcion) nDescripcion.innerHTML = formatearDescripcionHTML(CONFIG_NEGOCIO.descripcion);
+
+  if (typeof insertarMenuContacto === "function") insertarMenuContacto();
+}
+
 async function cargarProductosDesdeSupabase() {
   if (!supabaseConfigurado() || typeof window.supabase === "undefined") return;
 
