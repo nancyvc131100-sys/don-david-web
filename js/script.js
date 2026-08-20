@@ -46,6 +46,41 @@ function formatearPrecio(valor) {
 }
 
 // ------------------------------------------------------------
+// FORMATEAR DESCRIPCIÓN — convierte el formato simple que se
+// escribe en el panel (**negrita**, líneas que empiezan con
+// "- " para viñetas) en HTML de verdad, para mostrarlo en
+// producto.html. Escapa el texto primero, así que aunque
+// alguien escriba algo parecido a una etiqueta HTML en la
+// descripción, no se interpreta como código.
+// ------------------------------------------------------------
+function formatearDescripcionHTML(texto) {
+  if (!texto) return "";
+
+  const escapado = texto
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;");
+
+  const lineas = escapado.split("\n");
+  let html = "";
+  let dentroDeLista = false;
+
+  lineas.forEach(function (linea) {
+    const esItem = linea.trim().indexOf("- ") === 0;
+    if (esItem) {
+      if (!dentroDeLista) { html += "<ul>"; dentroDeLista = true; }
+      html += "<li>" + linea.trim().slice(2) + "</li>";
+    } else {
+      if (dentroDeLista) { html += "</ul>"; dentroDeLista = false; }
+      if (linea.trim() !== "") html += "<p>" + linea + "</p>";
+    }
+  });
+  if (dentroDeLista) html += "</ul>";
+
+  return html.replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>");
+}
+
+// ------------------------------------------------------------
 // AVISO DE EDAD — aparece siempre que se RECARGA la página
 // (F5 / botón de recargar), pero ya NO cuando se llega
 // navegando desde otra página del sitio (por ejemplo, "Volver
@@ -207,6 +242,11 @@ function supabaseConfigurado() {
   return SUPABASE_URL.indexOf("http") === 0 && SUPABASE_ANON_KEY.length > 20;
 }
 
+// Datos de contacto del negocio: dirección, teléfono, horario y
+// descripción. Empiezan con estos valores por defecto (para que
+// el sitio nunca se vea vacío mientras Supabase responde), y se
+// reemplazan solos en cuanto cargue lo que se haya guardado
+// desde Configuración en el panel.
 let CONFIG_NEGOCIO = {
   direccion: "Jr. Cajamarca 170, Villa María del Triunfo",
   telefono: "+51 986 708 039",
@@ -214,8 +254,7 @@ let CONFIG_NEGOCIO = {
   descripcion: "Somos Licorería Don David, una empresa dedicada a ofrecer bebidas de calidad para tus mejores momentos."
 };
 
-async function   cargarProductosDesdeSupabase()
-                 {
+async function cargarConfiguracionNegocio() {
   if (!supabaseConfigurado() || typeof window.supabase === "undefined") return;
 
   try {
@@ -240,6 +279,10 @@ async function   cargarProductosDesdeSupabase()
   }
 }
 
+// Escribe CONFIG_NEGOCIO en cada lugar del sitio que lo muestra.
+// Si un elemento no existe en la página actual (por ejemplo,
+// catalogo.html no tiene "Sobre Nosotros"), simplemente se
+// omite — no hace falta que esta función sepa en qué página está.
 function aplicarConfiguracionNegocio() {
   const tbTelefono = document.getElementById("topbarTelefono");
   if (tbTelefono) tbTelefono.textContent = CONFIG_NEGOCIO.telefono;
@@ -255,7 +298,126 @@ function aplicarConfiguracionNegocio() {
   const nDescripcion = document.getElementById("quienesSomosTexto");
   if (nDescripcion) nDescripcion.innerHTML = formatearDescripcionHTML(CONFIG_NEGOCIO.descripcion);
 
+  // El menú de contacto lo arma partials.js — se le pide que se
+  // vuelva a dibujar ahora que CONFIG_NEGOCIO ya tiene los datos
+  // reales, en vez de los valores por defecto.
   if (typeof insertarMenuContacto === "function") insertarMenuContacto();
+}
+
+// ------------------------------------------------------------
+// SECCIONES EDITABLES — Marcas, Métodos de pago, Por qué
+// elegirnos, y Preguntas frecuentes. Las tarjetas de abajo (en
+// index.html) empiezan vacías; esta función las llena en cuanto
+// Supabase responde. Si algo falla, simplemente no se tocan —
+// no hay versión "por defecto" en JS para estas, ya que ya
+// están escritas como HTML de respaldo dentro del propio archivo.
+// ------------------------------------------------------------
+let TARJETAS_SECCIONES = { marca: [], metodo_pago: [], por_que_elegirnos: [] };
+let PREGUNTAS_FRECUENTES = [];
+
+function iconoHTML(icono) {
+  if (!icono) return "";
+  return icono.indexOf("bi-") === 0 ? '<i class="bi ' + icono + '"></i>' : icono;
+}
+
+async function cargarSeccionesEditables() {
+  if (!supabaseConfigurado() || typeof window.supabase === "undefined") return;
+
+  try {
+    const cliente = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+    const [resTarjetas, resPreguntas] = await Promise.all([
+      cliente.from("secciones_tarjetas").select("*").order("orden"),
+      cliente.from("preguntas_frecuentes").select("*").order("orden")
+    ]);
+
+    if (!resTarjetas.error && resTarjetas.data && resTarjetas.data.length > 0) {
+      TARJETAS_SECCIONES = { marca: [], metodo_pago: [], por_que_elegirnos: [] };
+      resTarjetas.data.forEach(function (t) {
+        if (TARJETAS_SECCIONES[t.seccion]) TARJETAS_SECCIONES[t.seccion].push(t);
+      });
+      renderizarMarcas();
+      renderizarMetodosPago();
+      renderizarPorQueElegirnos();
+    }
+
+    if (!resPreguntas.error && resPreguntas.data && resPreguntas.data.length > 0) {
+      PREGUNTAS_FRECUENTES = resPreguntas.data;
+      renderizarPreguntas();
+    }
+  } catch (e) {
+    console.warn("No se pudieron cargar las secciones editables; se usa el contenido escrito en el HTML.", e);
+  }
+}
+
+function renderizarMarcas() {
+  const cont = document.getElementById("grillaMarcas");
+  if (!cont || TARJETAS_SECCIONES.marca.length === 0) return;
+
+  cont.innerHTML = TARJETAS_SECCIONES.marca.map(function (m) {
+    return (
+      '<div class="col-md-3 mb-4">' +
+        '<div class="marca-card">' +
+          iconoHTML(m.icono) +
+          '<h5>' + m.titulo + '</h5>' +
+        '</div>' +
+      '</div>'
+    );
+  }).join("");
+}
+
+function renderizarMetodosPago() {
+  const cont = document.getElementById("grillaMetodosPago");
+  if (!cont || TARJETAS_SECCIONES.metodo_pago.length === 0) return;
+
+  cont.innerHTML = TARJETAS_SECCIONES.metodo_pago.map(function (m) {
+    return (
+      '<div class="col-md-3">' +
+        '<div class="pago-card">' +
+          '<h3>' + iconoHTML(m.icono) + '</h3>' +
+          '<h5>' + m.titulo + '</h5>' +
+        '</div>' +
+      '</div>'
+    );
+  }).join("");
+}
+
+function renderizarPorQueElegirnos() {
+  const cont = document.getElementById("grillaPorQueElegirnos");
+  if (!cont || TARJETAS_SECCIONES.por_que_elegirnos.length === 0) return;
+
+  cont.innerHTML = TARJETAS_SECCIONES.por_que_elegirnos.map(function (r) {
+    return (
+      '<div class="col-md-3 mb-4">' +
+        '<div class="card h-100 p-3">' +
+          '<h1>' + iconoHTML(r.icono) + '</h1>' +
+          '<h5>' + r.titulo + '</h5>' +
+          (r.descripcion ? '<p>' + r.descripcion + '</p>' : '') +
+        '</div>' +
+      '</div>'
+    );
+  }).join("");
+}
+
+function renderizarPreguntas() {
+  const cont = document.getElementById("preguntas");
+  if (!cont || PREGUNTAS_FRECUENTES.length === 0) return;
+
+  cont.innerHTML = PREGUNTAS_FRECUENTES.map(function (p, i) {
+    const idColapso = "pregunta" + i;
+    return (
+      '<div class="accordion-item">' +
+        '<h2 class="accordion-header">' +
+          '<button class="accordion-button' + (i === 0 ? '' : ' collapsed') + '" type="button" data-bs-toggle="collapse" data-bs-target="#' + idColapso + '">' +
+            p.pregunta +
+          '</button>' +
+        '</h2>' +
+        '<div id="' + idColapso + '" class="accordion-collapse collapse' + (i === 0 ? ' show' : '') + '" data-bs-parent="#preguntas">' +
+          '<div class="accordion-body">' + p.respuesta + '</div>' +
+        '</div>' +
+      '</div>'
+    );
+  }).join("");
 }
 
 async function cargarProductosDesdeSupabase() {
@@ -335,6 +497,8 @@ document.addEventListener("DOMContentLoaded", function () {
   inicializarCatalogo();
   renderizarPaginaProducto();
   cargarProductosDesdeSupabase();
+  cargarConfiguracionNegocio();
+  cargarSeccionesEditables();
 });
 
 console.log("SCRIPT CARGADO");
