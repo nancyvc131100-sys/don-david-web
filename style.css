@@ -1,7 +1,14 @@
+
+
+
 body {
 
     font-family: Arial, sans-serif;
 
+}
+
+img {
+    max-width: 100%;
 }
 
 /* BANNER */

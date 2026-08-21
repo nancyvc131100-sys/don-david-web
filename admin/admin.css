@@ -19,10 +19,14 @@
     width: 100%;
 }
 
-.admin-shell {
+    .admin-shell {
     min-height: 100vh;
     background: #f8f9fa;
     overflow-x: hidden;
+}
+
+.admin-shell .flex-grow-1 {
+    min-width: 0;
 }
 
 .admin-topbar {
