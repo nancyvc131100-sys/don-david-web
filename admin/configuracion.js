@@ -16,6 +16,7 @@ async function cargarConfiguracion() {
   }
 
   document.getElementById("cfDireccion").value = data.direccion || "";
+  document.getElementById("cfMapsUrl").value = data.maps_url || "";
   document.getElementById("cfTelefono").value = data.telefono || "";
   document.getElementById("cfHorario").value = data.horario || "";
   document.getElementById("cfDescripcion").value = data.descripcion || "";
@@ -85,6 +86,7 @@ async function guardarConfiguracion(event) {
     const cliente = clienteSupabase();
     const { error } = await cliente.from("configuracion_negocio").update({
       direccion: document.getElementById("cfDireccion").value.trim(),
+      maps_url: document.getElementById("cfMapsUrl").value.trim() || null,
       telefono: document.getElementById("cfTelefono").value.trim(),
       horario: document.getElementById("cfHorario").value.trim(),
       descripcion: document.getElementById("cfDescripcion").value.trim(),

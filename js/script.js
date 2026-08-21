@@ -1,35 +1,5 @@
-/* ============================================================
-   LICORERÍA DON DAVID — script.js
-   ============================================================
-   Este archivo ya NO tiene todo el código del sitio — se dividió
-   en piezas más chicas, cada una con una sola responsabilidad:
+const WHATSAPP_NUMERO = "51986708039"; 
 
-     carrito.js      → carrito de compras
-     calculadora.js  → "¿Cuánto debo comprar?"
-     catalogo.js     → filtro/búsqueda de catalogo.html
-     producto.js     → plantilla de producto.html?id=X
-
-   Este script.js se queda con lo que TODOS los demás
-   necesitan: el catálogo de datos (PRODUCTOS), el formato de
-   precio, el aviso de edad, el buscador del inicio, el
-   carrusel, la grilla de "Productos destacados", la conexión
-   con Supabase, y el arranque que llama a cada módulo. Por eso
-   sus <script> deben cargarse ANTES que este archivo en el
-   HTML — así, cuando el navegador llega hasta acá y arranca
-   todo, las funciones de los demás módulos ya existen.
-   ============================================================ */
-
-// ------------------------------------------------------------
-// CONFIGURACIÓN GENERAL
-// ------------------------------------------------------------
-const WHATSAPP_NUMERO = "51986708039"; // mismo número que ya usaban los botones de compra directa
-
-// Catálogo de productos: la fuente única de verdad.
-// Hoy está escrito a mano. Cuando termines de configurar
-// Supabase más abajo (busca SUPABASE_URL), esta misma variable
-// se reemplaza automáticamente con los datos de tu base de
-// datos, y el carrito, la calculadora y la grilla de productos
-// siguen funcionando exactamente igual, sin tocar nada más.
 let PRODUCTOS = [
   { id: "whisky",   nombre: "Whisky Premium",    categoria: "whisky",  precio: 120.00, imagen: "/imagenes/wizky.jpg",   imagen_banner_url: "/imagenes/banner.jpg",       pagina: "/producto.html?id=whisky",  etiqueta: "mas_vendido", en_carrusel: true,
     descripcion: "Whisky seleccionado de excelente calidad, perfecto para celebraciones y reuniones." },
@@ -45,14 +15,7 @@ function formatearPrecio(valor) {
   return "S/ " + valor.toFixed(2);
 }
 
-// ------------------------------------------------------------
-// FORMATEAR DESCRIPCIÓN — convierte el formato simple que se
-// escribe en el panel (**negrita**, líneas que empiezan con
-// "- " para viñetas) en HTML de verdad, para mostrarlo en
-// producto.html. Escapa el texto primero, así que aunque
-// alguien escriba algo parecido a una etiqueta HTML en la
-// descripción, no se interpreta como código.
-// ------------------------------------------------------------
+
 function formatearDescripcionHTML(texto) {
   if (!texto) return "";
 
@@ -80,15 +43,7 @@ function formatearDescripcionHTML(texto) {
   return html.replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>");
 }
 
-// ------------------------------------------------------------
-// AVISO DE EDAD — aparece siempre que se RECARGA la página
-// (F5 / botón de recargar), pero ya NO cuando se llega
-// navegando desde otra página del sitio (por ejemplo, "Volver
-// al inicio" desde el catálogo) durante la misma sesión del
-// navegador. Usa sessionStorage (se borra al cerrar la
-// pestaña) en vez de localStorage (que no se borraba nunca) —
-// eso es lo que permite la distinción.
-// ------------------------------------------------------------
+
 function esRecarga() {
   try {
     const entradas = performance.getEntriesByType("navigation");
@@ -104,12 +59,6 @@ function aceptarEdad() {
 }
 
 function rechazarEdad() {
-  // No hay forma 100% confiable de cerrar una pestaña que el
-  // visitante abrió por su cuenta (los navegadores lo bloquean
-  // por seguridad, salvo que la haya abierto un script). Por
-  // eso primero se intenta cerrar, y si el navegador lo impide,
-  // el redirect de abajo se ejecuta igual y saca al visitante
-  // del sitio de todas formas.
   window.close();
   window.location.href = "https://www.google.com";
 }
@@ -120,15 +69,12 @@ window.addEventListener("load", function () {
 
   const yaConfirmado = sessionStorage.getItem("edadConfirmada") === "si";
   if (yaConfirmado && !esRecarga()) {
-    aviso.style.display = "none"; // llegó navegando desde otra página, ya lo había confirmado
+    aviso.style.display = "none";
   }
-  // si es recarga (F5), o si nunca lo confirmó en esta sesión,
-  // no se toca nada — el aviso se queda visible por defecto.
 });
 
 // ------------------------------------------------------------
-// BUSCADOR (ya existía; ahora solo filtra las tarjetas de
-// productos, no cualquier tarjeta de la página)
+// BUSCADOR
 // ------------------------------------------------------------
 function inicializarBuscador() {
   const buscador = document.getElementById("buscador");
@@ -146,19 +92,15 @@ function inicializarBuscador() {
 }
 
 // ------------------------------------------------------------
-// CARRUSEL DE INICIO — se arma solo con los productos que
-// tengan en_carrusel = true (el checkbox "Mostrar en el
-// carrusel de inicio" del panel). Usa imagen_banner_url si el
-// producto tiene una foto ancha específica para el carrusel;
-// si no, usa la misma imagen del catálogo.
+// CARRUSEL DE INICIO
 // ------------------------------------------------------------
 function renderizarCarrusel() {
   const indicadores = document.getElementById("carouselIndicadores");
   const contenido = document.getElementById("carouselContenido");
-  if (!indicadores || !contenido) return; // esta página no tiene carrusel
+  if (!indicadores || !contenido) return;
 
   const destacados = PRODUCTOS.filter(function (p) { return p.en_carrusel; });
-  if (destacados.length === 0) return; // no se toca nada: mejor dejar el último carrusel válido que uno vacío
+  if (destacados.length === 0) return;
 
   indicadores.innerHTML = destacados.map(function (p, i) {
     return '<button type="button" data-bs-target="#carouselLicoreria" data-bs-slide-to="' + i + '"' + (i === 0 ? ' class="active"' : '') + '></button>';
@@ -180,10 +122,7 @@ function renderizarCarrusel() {
 }
 
 // ------------------------------------------------------------
-// GRILLA DE PRODUCTOS — pinta las tarjetas de "Productos
-// destacados" a partir del arreglo PRODUCTOS (solo existe en
-// index.html; en las demás páginas grillaProductos es null y
-// la función no hace nada).
+// GRILLA DE PRODUCTOS
 // ------------------------------------------------------------
 function renderizarGrillaProductos() {
   const grilla = document.getElementById("grillaProductos");
@@ -191,7 +130,7 @@ function renderizarGrillaProductos() {
 
   grilla.innerHTML = PRODUCTOS.map(function (p) {
     return (
-      '<div class="col-6 col-md-3">' +
+      '<div class="col-md-3">' +
         '<div class="card producto-card">' +
           '<img src="' + p.imagen + '" class="card-img-top">' +
           '<div class="card-body text-center">' +
@@ -211,15 +150,11 @@ function renderizarGrillaProductos() {
     );
   }).join("");
 
-  // Los botones "Agregar" recién creados necesitan que el
-  // carrito los vuelva a conectar (esa función vive en carrito.js).
   conectarBotonesAgregar();
 }
 
 // ------------------------------------------------------------
-// BOTÓN "VOLVER ARRIBA" — en index.html hace scroll suave (como
-// antes); en las páginas de producto navega a index.html#inicio,
-// porque ahí #inicio no existe.
+// BOTÓN "VOLVER ARRIBA"
 // ------------------------------------------------------------
 function volverArriba(event) {
   const enInicio = window.location.pathname === "/" || window.location.pathname.endsWith("/index.html");
@@ -231,27 +166,19 @@ function volverArriba(event) {
 }
 
 // ------------------------------------------------------------
-// SUPABASE (opcional) — el sitio funciona perfectamente sin
-// esto, usando el arreglo PRODUCTOS de arriba. SUPABASE_URL y
-// SUPABASE_ANON_KEY ya NO viven en este archivo: están en
-// config.js (que se carga antes que este script.js en el
-// HTML), para que tus credenciales reales no se pisen cada vez
-// que actualizo el resto del código.
+// SUPABASE
 // ------------------------------------------------------------
 function supabaseConfigurado() {
   return SUPABASE_URL.indexOf("http") === 0 && SUPABASE_ANON_KEY.length > 20;
 }
 
-// Datos de contacto del negocio: dirección, teléfono, horario y
-// descripción. Empiezan con estos valores por defecto (para que
-// el sitio nunca se vea vacío mientras Supabase responde), y se
-// reemplazan solos en cuanto cargue lo que se haya guardado
-// desde Configuración en el panel.
 let CONFIG_NEGOCIO = {
   direccion: "Jr. Cajamarca 170, Villa María del Triunfo",
   telefono: "+51 986 708 039",
   horario: "Lunes - Domingo | 10:00 AM - 11:00 PM",
-  descripcion: "Somos Licorería Don David, una empresa dedicada a ofrecer bebidas de calidad para tus mejores momentos."
+  descripcion: "Somos Licorería Don David, una empresa dedicada a ofrecer bebidas de calidad para tus mejores momentos.",
+  logo_url: null,
+  maps_url: null
 };
 
 async function cargarConfiguracionNegocio() {
@@ -270,7 +197,9 @@ async function cargarConfiguracionNegocio() {
       direccion: data.direccion || CONFIG_NEGOCIO.direccion,
       telefono: data.telefono || CONFIG_NEGOCIO.telefono,
       horario: data.horario || CONFIG_NEGOCIO.horario,
-      descripcion: data.descripcion || CONFIG_NEGOCIO.descripcion
+      descripcion: data.descripcion || CONFIG_NEGOCIO.descripcion,
+      logo_url: data.logo_url || null,
+      maps_url: data.maps_url || null
     };
 
     aplicarConfiguracionNegocio();
@@ -279,10 +208,6 @@ async function cargarConfiguracionNegocio() {
   }
 }
 
-// Escribe CONFIG_NEGOCIO en cada lugar del sitio que lo muestra.
-// Si un elemento no existe en la página actual (por ejemplo,
-// catalogo.html no tiene "Sobre Nosotros"), simplemente se
-// omite — no hace falta que esta función sepa en qué página está.
 function aplicarConfiguracionNegocio() {
   const tbTelefono = document.getElementById("topbarTelefono");
   if (tbTelefono) tbTelefono.textContent = CONFIG_NEGOCIO.telefono;
@@ -298,19 +223,21 @@ function aplicarConfiguracionNegocio() {
   const nDescripcion = document.getElementById("quienesSomosTexto");
   if (nDescripcion) nDescripcion.innerHTML = formatearDescripcionHTML(CONFIG_NEGOCIO.descripcion);
 
-  // El menú de contacto lo arma partials.js — se le pide que se
-  // vuelva a dibujar ahora que CONFIG_NEGOCIO ya tiene los datos
-  // reales, en vez de los valores por defecto.
+  const logo = document.getElementById("logoIcono");
+  if (logo && CONFIG_NEGOCIO.logo_url) {
+    logo.innerHTML = '<img src="' + CONFIG_NEGOCIO.logo_url + '" style="width:32px;height:32px;object-fit:cover;border-radius:6px;" alt="Logo">';
+  }
+
+  const mapa = document.getElementById("mapaUbicacion");
+  if (mapa) {
+    mapa.src = CONFIG_NEGOCIO.maps_url || ("https://www.google.com/maps?q=" + encodeURIComponent(CONFIG_NEGOCIO.direccion) + "&output=embed");
+  }
+
   if (typeof insertarMenuContacto === "function") insertarMenuContacto();
 }
 
 // ------------------------------------------------------------
-// SECCIONES EDITABLES — Marcas, Métodos de pago, Por qué
-// elegirnos, y Preguntas frecuentes. Las tarjetas de abajo (en
-// index.html) empiezan vacías; esta función las llena en cuanto
-// Supabase responde. Si algo falla, simplemente no se tocan —
-// no hay versión "por defecto" en JS para estas, ya que ya
-// están escritas como HTML de respaldo dentro del propio archivo.
+// SECCIONES EDITABLES
 // ------------------------------------------------------------
 let TARJETAS_SECCIONES = { marca: [], metodo_pago: [], por_que_elegirnos: [] };
 let PREGUNTAS_FRECUENTES = [];
@@ -452,11 +379,6 @@ async function cargarProductosDesdeSupabase() {
       };
     });
 
-    // Cada una de estas funciones vive en su propio archivo
-    // (carrusel/grilla acá mismo, catálogo en catalogo.js,
-    // página de producto en producto.js) — todas ya existen
-    // para cuando esto se ejecuta, porque sus <script> se
-    // cargan antes que este.
     renderizarGrillaProductos();
     renderizarCatalogo();
     renderizarPaginaProducto();
@@ -482,11 +404,7 @@ async function registrarPedidoEnSupabase(carrito) {
 }
 
 // ------------------------------------------------------------
-// ARRANQUE — llama al init de cada módulo. Si una página no
-// tiene el elemento que cierto módulo necesita (por ejemplo,
-// catalogo.js en producto.html), esa función simplemente no
-// hace nada — no hace falta que este arranque sepa en qué
-// página está.
+// ARRANQUE
 // ------------------------------------------------------------
 document.addEventListener("DOMContentLoaded", function () {
   inicializarBuscador();
