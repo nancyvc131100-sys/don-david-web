@@ -191,7 +191,7 @@ function renderizarGrillaProductos() {
 
   grilla.innerHTML = PRODUCTOS.map(function (p) {
     return (
-      '<div class="col-md-3">' +
+      '<div class="col-6 col-md-3">' +
         '<div class="card producto-card">' +
           '<img src="' + p.imagen + '" class="card-img-top">' +
           '<div class="card-body text-center">' +
@@ -356,7 +356,7 @@ function renderizarMarcas() {
 
   cont.innerHTML = TARJETAS_SECCIONES.marca.map(function (m) {
     return (
-      '<div class="col-md-3 mb-4">' +
+      '<div class="col-6 col-md-3 mb-4">' +
         '<div class="marca-card">' +
           iconoHTML(m.icono) +
           '<h5>' + m.titulo + '</h5>' +
@@ -372,7 +372,7 @@ function renderizarMetodosPago() {
 
   cont.innerHTML = TARJETAS_SECCIONES.metodo_pago.map(function (m) {
     return (
-      '<div class="col-md-3">' +
+      '<div class="col-6 col-md-3">' +
         '<div class="pago-card">' +
           '<h3>' + iconoHTML(m.icono) + '</h3>' +
           '<h5>' + m.titulo + '</h5>' +
@@ -388,7 +388,7 @@ function renderizarPorQueElegirnos() {
 
   cont.innerHTML = TARJETAS_SECCIONES.por_que_elegirnos.map(function (r) {
     return (
-      '<div class="col-md-3 mb-4">' +
+      '<div class="col-6 col-md-3 mb-4">' +
         '<div class="card h-100 p-3">' +
           '<h1>' + iconoHTML(r.icono) + '</h1>' +
           '<h5>' + r.titulo + '</h5>' +

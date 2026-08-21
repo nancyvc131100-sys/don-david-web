@@ -1044,32 +1044,23 @@ h1,h2,h3{
 
     background:white;
 
-    padding:30px;
+    padding:16px;
 
     border-radius:20px;
 
-    font-size:45px;
+    font-size:32px;
 
     box-shadow:0 5px 15px rgba(0,0,0,.1);
 
     transition:.3s;
-    .marca-card{
-
-    transition:.4s;
-
-}
-
-.marca-card:hover{
-
-    transform:rotate(2deg) scale(1.05);
-
-}
 
 }
 
 .marca-card h5{
 
-    margin-top:15px;
+    margin-top:8px;
+
+    font-size:15px;
 
 }
 
