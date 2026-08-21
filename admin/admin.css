@@ -31,10 +31,6 @@
     padding: 12px 20px;
 }
 
-/* En celular, el saludo con nombre+rol puede ser largo — que no
-   empuje "Cerrar sesión" fuera de la pantalla. Se acomoda en
-   una sola línea, recortando el texto si hace falta, y el
-   botón de cerrar sesión se reduce a solo el ícono. */
 @media (max-width: 767px) {
     .admin-topbar {
         gap: 8px;
@@ -52,13 +48,10 @@
 }
 
 .admin-sidebar {
-    width: 200px;
+    width: 240px;
     background: white;
 }
 
-/* En celular, el panel desplegable no debe ocupar toda la
-   pantalla para solo 3 enlaces — se ve como un menú flotante
-   compacto, del alto justo que necesita su contenido. */
 @media (max-width: 767px) {
     .admin-sidebar.offcanvas-start {
         height: auto;
@@ -71,6 +64,14 @@
 
 .admin-sidebar .offcanvas-header {
     border-bottom: 1px solid #e9ecef;
+}
+
+/* Bootstrap le pone flex-grow:1 al cuerpo del offcanvas por
+   defecto (para que un menú de pantalla completa llene todo el
+   espacio) — acá no lo queremos, porque el menú debe ser del
+   tamaño justo de sus 3 enlaces, no estirarse a llenar el hueco. */
+.admin-sidebar .offcanvas-body {
+    flex-grow: 0;
 }
 
 @media (min-width: 768px) {
@@ -136,15 +137,13 @@
     gap: 6px;
 }
 
-/* En celular, el título ("Productos") y el botón de acción
-   ("+ Nuevo producto") no siempre caben lado a lado — que el
-   botón baje a su propia línea, de ancho completo, en vez de
-   quedar cortado por el borde de la pantalla. */
 @media (max-width: 480px) {
     .admin-header-accion {
         flex-direction: column;
-        align-items: flex-end !important;
         gap: 10px;
+    }
+    .admin-header-accion .admin-btn-nuevo {
+        align-self: flex-end;
     }
 }
 
