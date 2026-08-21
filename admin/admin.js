@@ -7,6 +7,44 @@ function clienteSupabase() {
   return _clienteSupabaseInstancia;
 }
 
+// Recuperación de contraseña: reutiliza el campo de correo que
+// ya está en el formulario de login (si está vacío, avisa antes
+// de intentar). A diferencia de "crear usuario", esto SÍ lo
+// permite la llave pública — restablecer tu propia contraseña
+// con tu propio correo no necesita permisos especiales.
+async function enviarRecuperacion() {
+  const email = document.getElementById("loginEmail").value.trim();
+  const errorEl = document.getElementById("loginError");
+  const exitoEl = document.getElementById("recuperacionExito");
+
+  errorEl.style.display = "none";
+  exitoEl.style.display = "none";
+
+  if (!email) {
+    errorEl.textContent = "Escribe tu correo arriba primero, y luego toca este enlace.";
+    errorEl.style.display = "block";
+    return false;
+  }
+
+  try {
+    const cliente = clienteSupabase();
+    const { error } = await cliente.auth.resetPasswordForEmail(email, {
+      redirectTo: window.location.origin + "/admin/restablecer.html"
+    });
+
+    if (error) throw error;
+
+    exitoEl.textContent = "Listo — revisa tu correo (" + email + ") para el link de recuperación.";
+    exitoEl.style.display = "block";
+  } catch (e) {
+    console.error("Error enviando recuperación:", e);
+    errorEl.textContent = "No se pudo enviar el correo. Intenta de nuevo en unos minutos.";
+    errorEl.style.display = "block";
+  }
+
+  return false;
+}
+
 async function iniciarSesion(event) {
   event.preventDefault();
 
