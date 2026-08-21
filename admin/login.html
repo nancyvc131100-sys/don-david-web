@@ -43,9 +43,15 @@
                 <input type="password" id="loginPassword" class="form-control" required autocomplete="current-password">
             </div>
 
+
             <div id="loginError" class="alert alert-danger py-2" style="display:none; font-size:14px;"></div>
+            <div id="recuperacionExito" class="alert alert-success py-2" style="display:none; font-size:13px;"></div>
 
             <button type="submit" class="btn btn-dark w-100" id="btnIniciarSesion">Ingresar</button>
+
+            <div class="text-center mt-2">
+                <a href="#" onclick="return enviarRecuperacion()" style="font-size:13px; color:#6c757d;">¿Olvidaste tu contraseña?</a>
+            </div>
 
         </form>
 
